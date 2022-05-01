@@ -37,22 +37,23 @@ double to_wavenumber(double wavelenght){
 }
 
 double beam_widening_vacuum(double link_distance, double telescope_aperture, double wavelenght){
-
   double wavenumber =  to_wavenumber(wavelenght);
-  //link_distance *= 1000; ??
+
   return sqrt(4 * pow(link_distance, 2) / (pow(wavenumber, 2) * pow(telescope_aperture, 2)) + pow(telescope_aperture, 2) / 4);
 }
 
 double beam_widening_atmosphere(double link_distance, double telescope_aperture, double wavelenght, double coherence_length){
-
   double wavenumber = to_wavenumber(wavelenght);
 
   return sqrt(4 * pow(link_distance, 2) / (pow(wavenumber, 2) * pow(telescope_aperture, 2)) + pow(telescope_aperture, 2) / 4 + 
     4 * pow(link_distance, 2) / pow(wavenumber * coherence_length, 2) * pow(1 - 0.62 * (pow(coherence_length / telescope_aperture, 1/3)), 6/5));
+}
 
+double turbulence_strength(double height_above_sea_level /*,double wind_speed*/){
+  double wind_speed = 21; // m/s
+  double A = 1.7 * pow(10, -14);
 
-
-
-
+  return 0.00594 * pow((wind_speed / 27), 2) * pow(height_above_sea_level * pow(10, -5), 10) * exp(height_above_sea_level / -1000) +
+    2.7 * pow(10, -6) * exp(height_above_sea_level / -1500) + A * exp(height_above_sea_level / -100);
 }
 
