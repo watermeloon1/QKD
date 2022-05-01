@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <iomanip>
 
 #define PI 3.14159265 
 #define RADIUS 6378
@@ -35,9 +36,8 @@ int main(int argc, char *argv[]){
 
   //RATIO
   double ratio = 0.5*(1-cos(alpha))*100;
-  cout << "SURFACE: " << surface << "km2" << endl;
+  cout << fixed << setprecision(2) << "SURFACE: " << surface << " km2" << endl;
   cout << "RATIO: " << ratio << "%" << endl;
 
   return 0;
 }
-
