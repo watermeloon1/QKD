@@ -13,6 +13,7 @@
  * @param distance_to_base double - the shortest distance between the sattelite and the communicating base (km)
  * @return double - the zenit angle ( °)
  */
+
 double Tools::zenith(double distance_to_earth, double distance_to_base){
 
   if (distance_to_earth <= distance_to_base){
@@ -156,24 +157,24 @@ double Tools::dynamic_loss(double total_scattering, double mirror_radius){
 /**
  * @brief Calculates the static loss of the beam going through the atmosphere of Earth.
  * 
- * @param molecular_scattering double[] - the molecular scattering of the beam due to climate conditions
- * @param molecular_absorption double[] - the molecular absorption of the atmosphere
- * @param aerosol_scattering double[] - the molecular scattering of the beam due to weather conditions
- * @param aerosol_absorption double[] - the aerosol absorption of the atmosphere
- * @param layers_of_air double[] - the atmosphere of Earth divided to several layers on top of each other
+ * @param molecular_scattering vector <double> - the molecular scattering of the beam due to climate conditions
+ * @param molecular_absorption vector <double>] - the molecular absorption of the atmosphere
+ * @param aerosol_scattering vector <double> - the molecular scattering of the beam due to weather conditions
+ * @param aerosol_absorption vector <double> - the aerosol absorption of the atmosphere
+ * @param layers_of_air vector <double> - the atmosphere of Earth divided to several layers on top of each other
  * @param zenith double - the zenith angle of the beam 
  * @return double - the sum of the static loss in all of the individual layers
  */
 double Tools::static_loss(std::vector <double> molecular_scattering, std::vector <double> molecular_absorption, 
   std::vector <double> aerosol_scattering, std::vector <double> aerosol_absorption, std::vector <double> layers_of_air, double zenith){
 
-  double scattering[molecular_scattering.size()];
+  std::vector <double> scattering(molecular_scattering.size());
 
   for(int i; i < molecular_scattering.size(); i++){
     scattering[i] = molecular_scattering[i] + aerosol_scattering[i];
   }
 
-  double absorption[molecular_absorption.size()];
+  std::vector <double> absorption(molecular_absorption.size());
 
   for(int i; i < molecular_absorption.size(); i++){
     absorption[i] = molecular_absorption[i] + aerosol_absorption[i];
@@ -195,9 +196,10 @@ double Tools::static_loss(std::vector <double> molecular_scattering, std::vector
  * @param wavelenght double - the wavelength of the beam, for the wavenumber (nm)
  * @return double - the wavenumber
  */
+ //TODO: meg ezek a hard codeolt szamokat ki lehet szervezni defineokba a legtetejere es akkor minden parametert latsz egy helyen
 double to_wavenumber(double wavelenght){
   return 2 * PI / (wavelenght * pow(10, -9)); //gallium arsenide ??
-}
+} 
 
 /**
  * @brief Converts degrees to radians.
