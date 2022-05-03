@@ -2,24 +2,7 @@
 #include <math.h>
 #include <vector>
 #include "../include/tools.hpp"
-
-#define PI 3.14159265 
-#define EARTH_RADIUS 6378
-/**
- * @brief Converts radians to degrees.
- * 
- */
-#define DEGREE(radian) radian * 180 / PI
-/**
- * @brief Converts kilometers to meters.
- * 
- */
-#define METER(kilometer) kilometer * 1000
-/**
- * @brief Converts wavelength to a wavenumber, that can be used in calculations.
- * 
- */
-#define WAVE(length) 2 * PI / (length * pow(10, -9))
+#include "../include/values.hpp"
 
 /**
  * @brief Calculates the zenit angle of the beam hitting/leaving the surface of Earth.

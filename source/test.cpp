@@ -1,13 +1,13 @@
 #include <iostream>
 #include "../include/tools.hpp"
+#include "../include/QProtocol.hpp"
+#include "../include/BB84.hpp"
+#include "../include/values.hpp"
 
 int main(){
 
-    Tools tools;
-
-    double zen = tools.zenith(1500, 1678);
-
-    std::cout << zen << std::endl;
+    BB84 *q = new BB84();
+    delete q;
 
     return 0;
 }
