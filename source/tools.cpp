@@ -5,6 +5,21 @@
 
 #define PI 3.14159265 
 #define EARTH_RADIUS 6378
+/**
+ * @brief Converts radians to degrees.
+ * 
+ */
+#define DEGREE(radian) radian * 180 / PI
+/**
+ * @brief Converts kilometers to meters.
+ * 
+ */
+#define METER(kilometer) kilometer * 1000
+/**
+ * @brief Converts wavelength to a wavenumber, that can be used in calculations.
+ * 
+ */
+#define WAVE(length) 2 * PI / (length * pow(10, -9))
 
 /**
  * @brief Calculates the zenit angle of the beam hitting/leaving the surface of Earth.
@@ -13,7 +28,6 @@
  * @param distance_to_base double - the shortest distance between the sattelite and the communicating base (km)
  * @return double - the zenit angle ( °)
  */
-
 double Tools::zenith(double distance_to_earth, double distance_to_base){
 
   if (distance_to_earth <= distance_to_base){
@@ -23,7 +37,7 @@ double Tools::zenith(double distance_to_earth, double distance_to_base){
     numerator = pow(EARTH_RADIUS, 2) + pow(distance_to_base, 2) - pow(EARTH_RADIUS + distance_to_earth, 2);
     denominator = 2 * EARTH_RADIUS * distance_to_base;
     alfa_radian = acos(numerator / denominator);
-    alfa_degree = to_degree(alfa_radian);
+    alfa_degree = DEGREE(alfa_radian);
     zenith_degree = 180 - alfa_degree;
 
     return zenith_degree;
@@ -43,8 +57,8 @@ double Tools::beam_widening_vacuum(double link_distance, double telescope_apertu
 
   double a, b, c;
 
-  double wavenumber =  to_wavenumber(wavelenght);
-  double link_distance_m = to_meter(link_distance);
+  double wavenumber =  WAVE(wavelenght);
+  double link_distance_m = METER(link_distance);
 
   a = 4 * pow(link_distance, 2);
   b = pow(wavenumber, 2) * pow(telescope_aperture, 2);
@@ -66,8 +80,8 @@ double Tools::beam_widening_atmosphere(double link_distance, double telescope_ap
 
   double a, b, c, d, e, f;
 
-  double wavenumber = to_wavenumber(wavelenght);
-  double link_distance_m = to_meter(link_distance);
+  double wavenumber = WAVE(wavelenght);
+  double link_distance_m = METER(link_distance);
 
   a = 4 * pow(link_distance_m, 2);
   b = pow(wavenumber, 2) * pow(telescope_aperture, 2);
@@ -112,7 +126,7 @@ double Tools::targeting_error(double link_distance, double angular_error){
 
   double a,b;
 
-  double link_distance_m = to_meter(link_distance);
+  double link_distance_m = METER(link_distance);
 
   a = link_distance_m * angular_error;
   b = pow(10, -6);
@@ -158,7 +172,7 @@ double Tools::dynamic_loss(double total_scattering, double mirror_radius){
  * @brief Calculates the static loss of the beam going through the atmosphere of Earth.
  * 
  * @param molecular_scattering vector <double> - the molecular scattering of the beam due to climate conditions
- * @param molecular_absorption vector <double>] - the molecular absorption of the atmosphere
+ * @param molecular_absorption vector <double> - the molecular absorption of the atmosphere
  * @param aerosol_scattering vector <double> - the molecular scattering of the beam due to weather conditions
  * @param aerosol_absorption vector <double> - the aerosol absorption of the atmosphere
  * @param layers_of_air vector <double> - the atmosphere of Earth divided to several layers on top of each other
@@ -188,45 +202,4 @@ double Tools::static_loss(std::vector <double> molecular_scattering, std::vector
   }
 
   return exp((-1) * sum_of_layers);
-}
-
-/**
- * @brief Converts the wavelength to a wavenumber, that can be used in the calculations.
- * 
- * @param wavelenght double - the wavelength of the beam, for the wavenumber (nm)
- * @return double - the wavenumber
- */
- //TODO: meg ezek a hard codeolt szamokat ki lehet szervezni defineokba a legtetejere es akkor minden parametert latsz egy helyen
-double to_wavenumber(double wavelenght){
-  return 2 * PI / (wavelenght * pow(10, -9)); //gallium arsenide ??
-} 
-
-/**
- * @brief Converts degrees to radians.
- * 
- * @param degree double - the angle in degrees
- * @return double - the angle in radians
- */
-double to_radian(double degree){
-  return (degree * PI) / 180;
-}
-
-/**
- * @brief Converts radians to degrees.
- * 
- * @param radian double - the angle in radians
- * @return double - the angle in degrees
- */
-double to_degree(double radian){
-  return (radian * 180) / PI;
-}
-
-/**
- * @brief Converts kilometers to meters.
- * 
- * @param kilometer double - the distance in kilometers
- * @return double - the distance in meters
- */
-double to_meter(double kilometer){
-  return kilometer * 1000;
 }
