@@ -1,5 +1,3 @@
-#include <iostream>
-#include <math.h>
 #include <vector>
 #include "../include/tools.hpp"
 #include "../include/values.hpp"

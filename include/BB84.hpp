@@ -1,11 +1,10 @@
 #ifndef BB84_HPP
 #define BB84_HPP
-
-#include <vector>
  
 class BB84 : public QProtocol{
     public:
-        BB84();
+        BB84(); // constructor
+        ~BB84(); // destructor
         std::string get_protocol_name();
 
 };

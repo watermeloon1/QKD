@@ -6,4 +6,5 @@ std::string BB84::get_protocol_name(){
     return "BB84";
 }
 
-BB84::BB84(){}
+BB84::BB84():QProtocol(){}
+BB84::~BB84(){}

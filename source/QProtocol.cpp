@@ -1,17 +1,16 @@
-#include <iostream>
-#include <math.h>
 #include "../include/QProtocol.hpp"
 #include "../include/values.hpp"
 
 QProtocol::QProtocol(){
-
+    init_loss();
+    init_distance_sections();
 }
 
 /**
  * @brief Assigns a vlaue to the distance variable, based on the height and the zenith.
  * 
  */
-void QProtocol::set_distance(){
+void QProtocol::init_distance(){
 
     double a, b, c, d;
 
@@ -23,17 +22,16 @@ void QProtocol::set_distance(){
     c = pow(h, 2);
     d = EARTH_RADIUS * cos(RADIAN(z));
 
-    distance =  a + b + c - d;
+    this->distance =  a + b + c - d;
 } 
 
 /**
- * @brief Assigns values to the sections of the distance.
+ * @brief Divides the distance that the beam travels into sections.
  * 
  */
-void QProtocol::slice_distance(){
+void QProtocol::init_distance_sections(){
 
-
-    distance_sections[0] = 0;
+    this->distance_sections.assign(50,0);
 
     for(int i = 0; i < distance_sections.size() - 1; i++){
         if(distance_sections[i] < 1000){
@@ -48,9 +46,23 @@ void QProtocol::slice_distance(){
             distance_sections[i + 1] = distance_sections[i] + 5000;
             continue;
         }
-        if(distance_sections[i] > 60000){
+        if(distance_sections[i] >= 60000){
             distance_sections[i + 1] = distance_sections[i] + 10000;
             continue;
         }
     }
 }
+
+/**
+ * @brief Initialises the vectors of scattering and absorption with layers
+ * 
+ */
+void QProtocol::init_loss(){
+    std::vector<double> aerosol_absorption(33,0);
+    std::vector<double> aerosol_scattering(33,0); 
+    std::vector<double> molecular_absorption(33,0);
+    std::vector<double> molecular_scattering(33,0);
+    std::vector<double> layers(33,0);
+}
+
+QProtocol::~QProtocol(){}
