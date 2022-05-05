@@ -4,8 +4,6 @@
 #include <string>
 
 class QProtocol{
-	private:
-
 	protected:
         int direction; // the direction of the communication: 0 -> Earth-space; 1 -> space-Earth; 2 -> space-space
 		double distance; // the distance that the beam has to travel
@@ -18,13 +16,13 @@ class QProtocol{
         std::vector<double> layers; // the layers of the atmosphere in kilometers
 
         double zenith; // the zenith angle of the beam
-        //double wave_length;
-        //double wind_speed;
+        double wave_length;
+        double wind_speed;
 	    double height_above_sea_level; // height above sea level in kilometers
-	    //double aperture_diameter;
-	    //double targeting_error;
-	    //double mirror_diameter;
-	    //double space_space_channel_length;
+	    double aperture_diameter;
+	    double targeting_angular_error;
+	    double mirror_diameter;
+	    double space_space_channel_length;
 	    //double frequency_of_laser_firing;
 	    //double quantum_efficiency_of_detector;
 	    //double mean_photon_number_of_signal;
@@ -33,11 +31,12 @@ class QProtocol{
 	    //double noise;
 	    //int number_of_detectors;
 	    //double efficiency_of_quantum_operations_by_bob;
-	    //double static_loss;
-	    //double coherence_length;
-	    //double beam_widening;
-    	//double total_scattering;
-	    //double dynamic_loss;
+	    double static_loss;
+	    double coherence_length;
+	    double beam_widening;
+		double targeting_error;
+    	double total_scattering;
+	    double dynamic_loss;
 	    //double transmittance;
 	    //double transmittance_bob_to_alice;
 	    //double dynamic_loss_bob_to_alice;
@@ -55,9 +54,13 @@ class QProtocol{
 		~QProtocol(); // destructor
 
         virtual std::string get_protocol_name() = 0;
+		virtual void set_qber() = 0;
+
 		void read_from_file();
 		void init_distance_sections();
 		void set_number_of_sectors(int number_of_sectors);
+
+		void set_direction(int direction);
 
 		std::vector <double> distance_sections; // the distance of the channel divided into sections
         
@@ -66,6 +69,7 @@ class QProtocol{
 		void set_weather(std::string weather);
 		void set_climate(std::string climate);
 		void set_season(std::string season);
+
 
 };
 

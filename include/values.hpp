@@ -2,6 +2,9 @@
 
 #define PI 3.14159265 
 #define EARTH_RADIUS 6378
+#define EARTH_SPACE 0
+#define SPACE_EARTH 1
+#define SPACE_SPACE 2
 
 /**
  * @brief Converts radians to degrees.

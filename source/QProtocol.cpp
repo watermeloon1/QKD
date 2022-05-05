@@ -4,7 +4,6 @@
 #include<fstream>
 
 QProtocol::QProtocol(){
-
     init_loss();
     init_distance_sections();
 }
@@ -69,33 +68,51 @@ void QProtocol::init_distance_sections(){
 
     std::cout << "Sectioning distance..." << std::endl;
 }
-int length(std::string str){ 
+
+/**
+ * @brief Returns the length of a given string.
+ * 
+ * @param string std::string - the string in question
+ * @return int - the length of the string
+ */
+int length(std::string string){ 
     int length = 0;  
-    for (int i = 0; str[i] != '\0'; i++){  
+    for (int i = 0; string[i] != '\0'; i++){  
         length++;  
     }  
     return length;     
 } 
 
-std::vector<std::string> split(std::string str, char seperator){  
+/**
+ * @brief Splits a sting into substrings with a given separator
+ * 
+ * @param string std::string - the string that needs to be splitted
+ * @param seperator char - a separator character, that parses the string
+ * @return std::vector<std::string> - the vector of substrings
+ */
+std::vector<std::string> split(std::string string, char separator){  
     int i = 0;  
     int startIndex = 0, endIndex = 0;  
     std::vector<std::string> strings;
 
-    while (i <= length(str)){  
-        if (str[i] == seperator || i == length(str)){  
+    while (i <= length(string)){  
+        if (string[i] == separator || i == length(string)){  
             endIndex = i;  
-            std::string subStr = "";  
-            subStr.append(str, startIndex, endIndex - startIndex);  
-            strings.push_back(subStr);
+            std::string substring = "";  
+
+            substring.append(string, startIndex, endIndex - startIndex);  
+            strings.push_back(substring);
             startIndex = endIndex + 1;  
         }  
         i++;  
     }     
-
     return strings;
 }  
 
+/**
+ * @brief Reads from the given resource file, that containis the values for the different scenarios.
+ * 
+ */
 void QProtocol::read_from_file(){
 
     std::cout << "Reading from file..." << std::endl;
@@ -147,6 +164,10 @@ void QProtocol::read_from_file(){
     }
 
     fin.close();
+}
+
+void QProtocol::set_direction(int direction){
+    this -> direction = direction;
 }
 
 void QProtocol::set_weather(std::string weather){

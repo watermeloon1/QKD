@@ -21,4 +21,5 @@ class Tools{
         double static_loss(std::vector <double> molecular_scattering, std::vector <double> molecular_absorption, std::vector <double> aerosol_scattering, std::vector <double> aerosol_absorption, std::vector <double> layers_of_air, double zenith);
 };
 
+
 #endif

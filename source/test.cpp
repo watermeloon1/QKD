@@ -7,7 +7,6 @@
 #include<fstream>
 #include <vector>
 
-
 int main(){
 
     BB84 *q = new BB84;
