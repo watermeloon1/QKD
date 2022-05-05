@@ -109,14 +109,15 @@ void QProtocol::read_from_file(){
 
     // Open an existing file
     fin.open("../resources/asv_860.csv");
-    std::cout << fin << std::endl;
+    
     while(!fin.eof()){
 
+        fin >> line;
         if(line_position > 6){
-            fin >> line;
-            line_cells.clear();
 
+            std::vector<std::string> line_cells;
             line_cells = split(line, separator);
+
             this -> layers.push_back(atof(line_cells[0].c_str()));
 
             if(this -> climate.compare("Tropical") == 0){
@@ -161,9 +162,6 @@ void QProtocol::set_season(std::string season){
 }
 
 std::vector<double> QProtocol::get_molecular_scattering(){
-    for(int i = 0; i < this -> molecular_scattering.size(); i++){
-        std::cout << this -> molecular_scattering[i] << std::endl;
-    }
     return this -> molecular_scattering;
 }
 
