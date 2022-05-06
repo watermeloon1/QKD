@@ -1,6 +1,6 @@
 ## Table of Contents
 1. [General Info](#general-info)
-2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [Collaboration](#collaboration)
-5. [FAQs](#faqs)
+##General Information
+***
+This project is a simulation of free-space QKD(Quantum Key Distribution), for a University project i am currently working on.
+
