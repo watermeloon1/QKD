@@ -1,6 +1,6 @@
 #include <vector>
-#include "../include/tools.hpp"
-#include "../include/values.hpp"
+#include "../include/Tools.hpp"
+#include "../include/Values.hpp"
 
 /**
  * @brief Calculates the zenit angle of the beam hitting/leaving the surface of Earth.

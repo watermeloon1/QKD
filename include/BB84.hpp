@@ -12,7 +12,6 @@ class BB84 : public QProtocol{
 
         void set_qber();
         double get_qber();
-        
 };
 
 #endif

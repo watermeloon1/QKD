@@ -26,9 +26,9 @@ class QProtocol{
 	    //double frequency_of_laser_firing;
 	    //double quantum_efficiency_of_detector;
 	    //double mean_photon_number_of_signal;
-	    //double qber;
-	    //double probability_of_polarization_measurement_error;
-	    //double noise;
+	    double qber;
+	    double probability_of_polarization_measurement_error;
+	    double noise;
 	    //int number_of_detectors;
 	    //double efficiency_of_quantum_operations_by_bob;
 	    double static_loss;
@@ -69,7 +69,6 @@ class QProtocol{
 		void set_weather(std::string weather);
 		void set_climate(std::string climate);
 		void set_season(std::string season);
-
 
 };
 

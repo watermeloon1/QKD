@@ -26,3 +26,4 @@
  * 
  */
 #define WAVE(length) 2 * PI / (length * pow(10, -9))
+

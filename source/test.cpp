@@ -1,8 +1,8 @@
 #include <iostream>
-#include "../include/tools.hpp"
+#include "../include/Tools.hpp"
 #include "../include/QProtocol.hpp"
 #include "../include/BB84.hpp"
-#include "../include/values.hpp"
+#include "../include/Values.hpp"
 
 #include<fstream>
 #include <vector>
