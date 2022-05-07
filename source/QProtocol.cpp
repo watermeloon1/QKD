@@ -1,23 +1,18 @@
 #include "../include/QProtocol.hpp"
 #include "../include/Values.hpp"
 #include <iostream>
-#include<fstream>
+#include <fstream>
 
 QProtocol::QProtocol(double height_above_sea_level, double zenith){
-
-    std::vector<double> aerosol_absorption;
-    std::vector<double> aerosol_scattering; 
-    std::vector<double> molecular_absorption;
-    std::vector<double> molecular_scattering;
-    std::vector<double> layers;
-
     init_distance(height_above_sea_level, zenith);
     read_from_file();
 }
 
 /**
- * @brief Assigns a vlaue to the distance variable, based on the height and the zenith.
- * 
+ * @brief Initialises the distance and the sectors of the distance.
+ *  
+ * @param height_above_sea_level - the position of the sattelite
+ * @param zenith - the zenith angle of the beam hitting Earth ( °)
  */
 void QProtocol::init_distance(double height_above_sea_level, double zenith){
 
@@ -33,43 +28,44 @@ void QProtocol::init_distance(double height_above_sea_level, double zenith){
 
     this -> distance =  sqrt(a + b + c) - d;
 
-    std::cout << "distance: " << this -> distance << std::endl;
+    std::cout << "Total distance: " << this -> distance << std::endl;
 
     double distance_temp = this -> distance;
 
-    this -> distance_sections.push_back(0);
+    this -> distance_sectors.push_back(0);
 
     for(int i = 0; distance_temp > 0; i++){
-        if(distance_sections[i] < 1000){
-            distance_sections.push_back(distance_sections[i] + 200);
+        if(distance_sectors[i] < 1000){
+            distance_sectors.push_back(distance_sectors[i] + 200);
             distance_temp -= 200;
             continue;
         }
-        if(distance_sections[i] < 30000){
-            distance_sections.push_back(distance_sections[i] + 1000);
+        if(distance_sectors[i] < 30000){
+            distance_sectors.push_back(distance_sectors[i] + 1000);
             distance_temp -= 1000;
             continue;
         }
-        if(distance_sections[i] < 60000){
-            distance_sections.push_back(distance_sections[i] + 5000);
+        if(distance_sectors[i] < 60000){
+            distance_sectors.push_back(distance_sectors[i] + 5000);
             distance_temp -= 5000;
             continue;
         }
-        if(distance_sections[i] >= 60000){
-            distance_sections.push_back(distance_sections[i] + 10000);
+        if(distance_sectors[i] >= 60000){
+            distance_sectors.push_back(distance_sectors[i] + 10000);
             distance_temp -= 10000;
             continue;
         }    
     }
-    distance_sections[distance_sections.size()-1] += distance_temp;
-    std::cout << "distance_temp: " << distance_temp << std::endl;
-    std::cout << "setions:" << distance_sections.size() << std::endl;
+    distance_sectors[distance_sectors.size()-1] += distance_temp;
+
+    //std::cout << "distance_temp: " << distance_temp << std::endl;
+    std::cout << "Number of sectors:" << distance_sectors.size() << std::endl;
 }
 
 /**
  * @brief Returns the length of a given string.
  * 
- * @param string std::string - the string in question
+ * @param string - the string in question
  * @return int - the length of the string
  */
 int length(std::string string){ 
@@ -81,10 +77,10 @@ int length(std::string string){
 } 
 
 /**
- * @brief Splits a sting into substrings with a given separator
+ * @brief Splits a sting into substrings with a given separator.
  * 
- * @param string std::string - the string that needs to be splitted
- * @param seperator char - a separator character, that parses the string
+ * @param string - the string that needs to be splitted
+ * @param seperator - a separator character, that parses the string
  * @return std::vector<std::string> - the vector of substrings
  */
 std::vector<std::string> split(std::string string, char separator){  
@@ -162,6 +158,14 @@ void QProtocol::read_from_file(){
     fin.close();
 }
 
+std::vector<double> QProtocol::get_molecular_scattering(){
+    return this -> molecular_scattering;
+}
+
+double QProtocol::get_zenith(){
+    return this -> zenith;
+}
+
 void QProtocol::set_direction(int direction){
     this -> direction = direction;
 }
@@ -178,13 +182,9 @@ void QProtocol::set_season(std::string season){
     this -> season = season;
 }
 
-std::vector<double> QProtocol::get_molecular_scattering(){
-    return this -> molecular_scattering;
-}
-
-void QProtocol::cout_distance_sections(){
-    for(int i = 0; i < distance_sections.size(); i++){
-        std::cout << distance_sections[i] << std::endl;
+void QProtocol::cout_distance_sectors(){
+    for(int i = 0; i < distance_sectors.size(); i++){
+        std::cout << distance_sectors[i] << std::endl;
     }
 }
 

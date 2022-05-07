@@ -32,7 +32,8 @@ int main(){
     //    std::cout << ms[i] << std::endl;
     //}
 
-    q->cout_distance_sections();
+    q->cout_distance_sectors();
+    std::cout << q->get_zenith() << std::endl;
 
     delete q;
 

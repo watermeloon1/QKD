@@ -1,7 +1,5 @@
 #ifndef BB84_HPP
 #define BB84_HPP
-
-#include <string>
  
 class BB84 : public QProtocol{
     public:
@@ -10,7 +8,7 @@ class BB84 : public QProtocol{
         
         std::string get_protocol_name();
 
-        void set_qber();
+        void qber();
         double get_qber();
 };
 

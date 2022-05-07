@@ -5,9 +5,9 @@
 /**
  * @brief Calculates the zenit angle of the beam hitting/leaving the surface of Earth.
  * 
- * @param distance_to_earth double - the shortest distance between the sattelite and the surface of Earth (km)
- * @param distance_to_base double - the shortest distance between the sattelite and the communicating base (km)
- * @return double - the zenit angle ( °)
+ * @param distance_to_earth - the shortest distance between the sattelite and the surface of Earth (km)
+ * @param distance_to_base - the shortest distance between the sattelite and the communicating base (km)
+ * @return double - the zenith angle of the beam hitting Earth ( °)
  */
 double Tools::zenith(double distance_to_earth, double distance_to_base){
 
@@ -29,9 +29,9 @@ double Tools::zenith(double distance_to_earth, double distance_to_base){
 /**
  * @brief The beam widening of a beam going through vacuum.
  * 
- * @param distance double - the distance between the emitter and the receiver (km)
- * @param telescope_aperture double - the aperture of the emitting telescope (m)
- * @param wavelenght double - the wavelength of the beam, for the wavenumber (nm)
+ * @param distance - the distance between the emitter and the receiver (km)
+ * @param telescope_aperture - the aperture of the emitting telescope (m)
+ * @param wavelenght - the wavelength of the beam (nm)
  * @return double - the extent of the widening (m)
  */
 double Tools::beam_widening_vacuum(double distance, double telescope_aperture, double wavelenght){
@@ -51,10 +51,10 @@ double Tools::beam_widening_vacuum(double distance, double telescope_aperture, d
 /**
  * @brief The beam widening of a beam going through the atmosphere.
  * 
- * @param distance double - the distance between the emitter and the receiver (km)
- * @param telescope_aperture double - the aperture of the emitting telescope (m)
- * @param wavelenght double - the wavelength of the beam, for the wavenumber (nm)
- * @param coherence_length double - length of the coherence
+ * @param distance - the distance between the emitter and the receiver (km)
+ * @param telescope_aperture - the aperture of the emitting telescope (m)
+ * @param wavelenght - the wavelength of the beam (nm)
+ * @param coherence_length - length of the coherence
  * @return double - the extent of the widening (m)
  */
 double Tools::beam_widening_atmosphere(double distance, double telescope_aperture, double wavelenght, double coherence_length){
@@ -77,8 +77,8 @@ double Tools::beam_widening_atmosphere(double distance, double telescope_apertur
 /**
  * @brief The strength of the turbulence in the atmospheare of Earth.
  * 
- * @param height_above_sea_level double - the height of the observed object (km)
- * @param wind_speed double - the speed of the wind at the give height (m/s)
+ * @param height_above_sea_level - the height of the observed position (km)
+ * @param wind_speed - the speed of the wind at the given height (m/s)
  * @return double - the strength of the turbulence
  */
 double Tools::turbulence_strength(double height_above_sea_level, double wind_speed){
@@ -99,9 +99,9 @@ double Tools::turbulence_strength(double height_above_sea_level, double wind_spe
 /**
  * @brief Calculates the targeting error of the beam.
  * 
- * @param distance double - the distance between the emitter and the receiver (km)
- * @param angular_error double - the deviation from the optimal direction (μrad)
- * @return double - the deviation from the receiver (m)
+ * @param distance - the distance between the emitter and the receiver (km)
+ * @param angular_error - the deviation from the optimal direction (μrad)
+ * @return double - the deviation from the target (m)
  */
 double Tools::targeting_error(double distance, double angular_error){
 
@@ -118,8 +118,8 @@ double Tools::targeting_error(double distance, double angular_error){
 /**
  * @brief The total scattering of the beam.
  * 
- * @param beam_radius double - the radius of the mitted beam
- * @param targeting_error double - the targeting error of the beam (m)
+ * @param beam_radius - the radius of the beam
+ * @param targeting_error - the targeting error of the beam (m)
  * @return double - the total scattering of the beam (m)
  */
 double Tools::total_scattering(double beam_radius, double targeting_error){
@@ -135,9 +135,9 @@ double Tools::total_scattering(double beam_radius, double targeting_error){
 /**
  * @brief Calculates the dynamic loss of the channel.
  * 
- * @param total_scattering double - the total scattering of the beam (m)
- * @param mirror_radius double - the mirror radius of the receiver (m)
- * @return double - the total dynamic loss of the channel
+ * @param total_scattering - the total scattering of the beam (m)
+ * @param mirror_radius - the mirror radius of the receiver (m)
+ * @return - the total dynamic loss of the channel
  */
 double Tools::dynamic_loss(double total_scattering, double mirror_radius){
 
@@ -152,13 +152,13 @@ double Tools::dynamic_loss(double total_scattering, double mirror_radius){
 /**
  * @brief Calculates the static loss of the beam going through the atmosphere of Earth.
  * 
- * @param molecular_scattering vector <double> - the molecular scattering of the beam due to climate conditions
- * @param molecular_absorption vector <double> - the molecular absorption of the atmosphere
- * @param aerosol_scattering vector <double> - the molecular scattering of the beam due to weather conditions
- * @param aerosol_absorption vector <double> - the aerosol absorption of the atmosphere
- * @param layers_of_air vector <double> - the atmosphere of Earth divided to several layers on top of each other
- * @param zenith double - the zenith angle of the beam 
- * @return double - the sum of the static loss in all of the individual layers
+ * @param molecular_scattering  - the molecular scattering of the beam due to climate conditions
+ * @param molecular_absorption  - the molecular absorption of the atmosphere
+ * @param aerosol_scattering - the molecular scattering of the beam due to weather conditions
+ * @param aerosol_absorption - the aerosol absorption of the atmosphere
+ * @param layers_of_air - the atmosphere of Earth divided into layers on top of each other
+ * @param zenith - the zenith angle of the beam hitting Earth ( °)
+ * @return double - the sum of static loss in all of the layers
  */
 double Tools::static_loss(std::vector <double> molecular_scattering, std::vector <double> molecular_absorption, 
   std::vector <double> aerosol_scattering, std::vector <double> aerosol_absorption, std::vector <double> layers_of_air, double zenith){
@@ -185,13 +185,23 @@ double Tools::static_loss(std::vector <double> molecular_scattering, std::vector
   return exp((-1) * sum_of_layers);
 }
 
-double Tools::beam_widening_earth_space(double wave_length, std::vector<double> sectors, double distance, double wind_speed, double zenith){
+/**
+ * @brief Calculates the total beam widening for the Earth-space direction.
+ * 
+ * @param wavelength - the wavelength of the beam (nm)
+ * @param sectors - the sectors of the distance that the beam travels
+ * @param distance - the distance that the beam travels (km)
+ * @param wind_speed - the speed of the wind
+ * @param zenith - the zenith angle of the beam hitting Earth ( °)
+ * @return double - the coherence length of the wave
+ */
+double Tools::beam_widening_earth_space(double wavelength, std::vector<double> sectors, double distance, double wind_speed, double zenith){
   
   double a, b, c, d, e;
   double t0, t1;
 
   double distance_m = METER(distance);
-  double wavenumber = WAVE(wave_length);
+  double wavenumber = WAVE(wavelength);
   
   double sum = 0;
 
@@ -223,13 +233,23 @@ double Tools::beam_widening_earth_space(double wave_length, std::vector<double> 
   }
 }
 
-double Tools::beam_widening_space_earth(double wave_length, std::vector<double> sectors, double distance, double wind_speed, double zenith){
+/**
+ * @brief Calculates the total beam widening for the space-Earth direction.
+ * 
+ * @param wavelength - the wavelength of the beam (nm)
+ * @param sectors - the sectors of the distance that the beam travels
+ * @param distance - the distance that the beam travels (km)
+ * @param wind_speed - the speed of the wind
+ * @param zenith - the zenith angle of the beam hitting Earth ( °)
+ * @return double - the coherence length of the wave
+ */
+double Tools::beam_widening_space_earth(double wavelength, std::vector<double> sectors, double distance, double wind_speed, double zenith){
 
   double a, b, c, d, e;
   double t0, t1;
 
   double distance_m = METER(distance);
-  double wavenumber = WAVE(wave_length);
+  double wavenumber = WAVE(wavelength);
   
   double sum = 0;
 
