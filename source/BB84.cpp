@@ -16,7 +16,7 @@ void BB84::set_qber(){
 
     case EARTH_SPACE:
         static_loss = tools -> static_loss(molecular_scattering, molecular_absorption, aerosol_scattering, aerosol_absorption, layers, zenith);
-        //coherence_length
+        coherence_length = tools -> beam_widening_earth_space(wave_length, distance_sections, distance, wind_speed, zenith);
         beam_widening = tools -> beam_widening_atmosphere(distance, wave_length, coherence_length, aperture_diameter);
         targeting_error = tools -> targeting_error(distance, targeting_angular_error);
         total_scattering = tools -> total_scattering(beam_widening, targeting_error);
@@ -25,7 +25,7 @@ void BB84::set_qber(){
     
     case SPACE_EARTH:
 	    static_loss = tools -> static_loss(molecular_scattering, molecular_absorption, aerosol_scattering, aerosol_absorption, layers, zenith);
-	    //coherence_length = tools -> beam_widening_space_to_ground(wave_length, distance_sections, distance, wind_speed, zenith, height_above_sea_level);
+	    coherence_length = tools -> beam_widening_space_earth(wave_length, distance_sections, distance, wind_speed, zenith);
 	    beam_widening = tools -> beam_widening_atmosphere(distance, wave_length, coherence_length, aperture_diameter);
 	    targeting_error = tools -> targeting_error(distance, targeting_angular_error);
 	    total_scattering = tools -> total_scattering(beam_widening, targeting_error);
@@ -48,5 +48,5 @@ double BB84::get_qber(){
     return this -> qber;
 }
 
-BB84::BB84():QProtocol(){}
+BB84::BB84(double height_above_sea_level, double zenith):QProtocol(height_above_sea_level, zenith){}
 BB84::~BB84(){}

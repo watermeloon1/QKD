@@ -9,7 +9,7 @@
 
 int main(){
 
-    BB84 *q = new BB84;
+    BB84 *q = new BB84(15000, 43);
 
     std::cout << q->get_protocol_name() << std::endl;
 
@@ -22,17 +22,17 @@ int main(){
     q->set_season(scenario[1]);
     q->set_weather(scenario[2]);
 
-    q->read_from_file();
-
-    std::vector<double> ms = q->get_molecular_scattering();
 
     //for(int i = 0; i < q->distance_sections.size(); i++){
     //    std::cout << q->distance_sections[i] << std::endl;
     //}
 
-    for(int i = 0; i < ms.size(); i++){
-        std::cout << ms[i] << std::endl;
-    }
+    //std::vector<double> ms = q->get_molecular_scattering();
+    //for(int i = 0; i < ms.size(); i++){
+    //    std::cout << ms[i] << std::endl;
+    //}
+
+    q->cout_distance_sections();
 
     delete q;
 

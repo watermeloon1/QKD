@@ -3,70 +3,67 @@
 #include <iostream>
 #include<fstream>
 
-QProtocol::QProtocol(){
-    init_loss();
-    init_distance_sections();
-}
+QProtocol::QProtocol(double height_above_sea_level, double zenith){
 
-/**
- * @brief Initialises the vectors of scattering and absorption with layers
- * 
- */
-void QProtocol::init_loss(){
     std::vector<double> aerosol_absorption;
     std::vector<double> aerosol_scattering; 
     std::vector<double> molecular_absorption;
     std::vector<double> molecular_scattering;
     std::vector<double> layers;
+
+    init_distance(height_above_sea_level, zenith);
+    read_from_file();
 }
 
 /**
  * @brief Assigns a vlaue to the distance variable, based on the height and the zenith.
  * 
  */
-void QProtocol::init_distance(){
+void QProtocol::init_distance(double height_above_sea_level, double zenith){
 
     double a, b, c, d;
 
-    double h = this->height_above_sea_level;
-    double z = this->zenith;
+    this -> height_above_sea_level = height_above_sea_level;
+    this -> zenith = zenith;
 
-    a = sqrt(pow(EARTH_RADIUS, 2) * pow(cos(RADIAN(z)), 2));
-    b = 2 * EARTH_RADIUS * h;
-    c = pow(h, 2);
-    d = EARTH_RADIUS * cos(RADIAN(z));
+    a = pow(EARTH_RADIUS, 2) * pow(cos(RADIAN(zenith)), 2);
+    b = 2 * EARTH_RADIUS * height_above_sea_level;
+    c = pow(height_above_sea_level, 2);
+    d = EARTH_RADIUS * cos(RADIAN(zenith));
 
-    this->distance =  a + b + c - d;
-} 
+    this -> distance =  sqrt(a + b + c) - d;
 
-/**
- * @brief Divides the distance that the beam travels into sections.
- * 
- */
-void QProtocol::init_distance_sections(){
+    std::cout << "distance: " << this -> distance << std::endl;
+
+    double distance_temp = this -> distance;
 
     this -> distance_sections.push_back(0);
 
-    for(int i = 0; i < 45; i++){
+    for(int i = 0; distance_temp > 0; i++){
         if(distance_sections[i] < 1000){
             distance_sections.push_back(distance_sections[i] + 200);
+            distance_temp -= 200;
             continue;
         }
         if(distance_sections[i] < 30000){
             distance_sections.push_back(distance_sections[i] + 1000);
+            distance_temp -= 1000;
             continue;
         }
         if(distance_sections[i] < 60000){
             distance_sections.push_back(distance_sections[i] + 5000);
+            distance_temp -= 5000;
             continue;
         }
         if(distance_sections[i] >= 60000){
             distance_sections.push_back(distance_sections[i] + 10000);
+            distance_temp -= 10000;
             continue;
-        }
+        }    
     }
-
-    std::cout << "Sectioning distance..." << std::endl;
+    distance_sections[distance_sections.size()-1] += distance_temp;
+    std::cout << "distance_temp: " << distance_temp << std::endl;
+    std::cout << "setions:" << distance_sections.size() << std::endl;
 }
 
 /**
@@ -132,8 +129,7 @@ void QProtocol::read_from_file(){
         fin >> line;
         if(line_position > 6){
 
-            std::vector<std::string> line_cells;
-            line_cells = split(line, separator);
+            std::vector<std::string> line_cells = split(line, separator);
 
             this -> layers.push_back(atof(line_cells[0].c_str()));
 
@@ -184,6 +180,12 @@ void QProtocol::set_season(std::string season){
 
 std::vector<double> QProtocol::get_molecular_scattering(){
     return this -> molecular_scattering;
+}
+
+void QProtocol::cout_distance_sections(){
+    for(int i = 0; i < distance_sections.size(); i++){
+        std::cout << distance_sections[i] << std::endl;
+    }
 }
 
 QProtocol::~QProtocol(){}

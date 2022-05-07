@@ -45,19 +45,18 @@ class QProtocol{
 	    std::string climate;
 	    std::string season;
 
-		void init_distance(); 
+		void init_distance(double height_above_sea_level, double zenith); 
 		void init_loss();
 
 	public: 
 
-		QProtocol(); // constructor
+		QProtocol(double height_above_sea_level, double zenith); // constructor
 		~QProtocol(); // destructor
 
         virtual std::string get_protocol_name() = 0;
 		virtual void set_qber() = 0;
 
 		void read_from_file();
-		void init_distance_sections();
 		void set_number_of_sectors(int number_of_sectors);
 
 		void set_direction(int direction);
@@ -70,6 +69,8 @@ class QProtocol{
 		void set_climate(std::string climate);
 		void set_season(std::string season);
 
+
+		void cout_distance_sections();
 };
 
 #endif

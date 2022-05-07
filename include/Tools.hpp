@@ -19,6 +19,11 @@ class Tools{
         double dynamic_loss(double total_scattering, double mirror_radius);
 
         double static_loss(std::vector <double> molecular_scattering, std::vector <double> molecular_absorption, std::vector <double> aerosol_scattering, std::vector <double> aerosol_absorption, std::vector <double> layers_of_air, double zenith);
+
+        double beam_widening_earth_space(double wave_length, std::vector<double> sectors, double distance, double wind_speed, double zenith);
+
+        double beam_widening_space_earth(double wave_length, std::vector<double> sectors, double distance, double wind_speed, double zenith);
+
 };
 
 #endif

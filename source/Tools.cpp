@@ -29,19 +29,19 @@ double Tools::zenith(double distance_to_earth, double distance_to_base){
 /**
  * @brief The beam widening of a beam going through vacuum.
  * 
- * @param link_distance double - the distance between the emitter and the receiver (km)
+ * @param distance double - the distance between the emitter and the receiver (km)
  * @param telescope_aperture double - the aperture of the emitting telescope (m)
  * @param wavelenght double - the wavelength of the beam, for the wavenumber (nm)
  * @return double - the extent of the widening (m)
  */
-double Tools::beam_widening_vacuum(double link_distance, double telescope_aperture, double wavelenght){
+double Tools::beam_widening_vacuum(double distance, double telescope_aperture, double wavelenght){
 
   double a, b, c;
 
   double wavenumber =  WAVE(wavelenght);
-  double link_distance_m = METER(link_distance);
+  double distance_m = METER(distance);
 
-  a = 4 * pow(link_distance, 2);
+  a = 4 * pow(distance_m, 2);
   b = pow(wavenumber, 2) * pow(telescope_aperture, 2);
   c = pow(telescope_aperture, 2);
 
@@ -51,23 +51,23 @@ double Tools::beam_widening_vacuum(double link_distance, double telescope_apertu
 /**
  * @brief The beam widening of a beam going through the atmosphere.
  * 
- * @param link_distance double - the distance between the emitter and the receiver (km)
+ * @param distance double - the distance between the emitter and the receiver (km)
  * @param telescope_aperture double - the aperture of the emitting telescope (m)
  * @param wavelenght double - the wavelength of the beam, for the wavenumber (nm)
  * @param coherence_length double - length of the coherence
  * @return double - the extent of the widening (m)
  */
-double Tools::beam_widening_atmosphere(double link_distance, double telescope_aperture, double wavelenght, double coherence_length){
+double Tools::beam_widening_atmosphere(double distance, double telescope_aperture, double wavelenght, double coherence_length){
 
   double a, b, c, d, e, f;
 
   double wavenumber = WAVE(wavelenght);
-  double link_distance_m = METER(link_distance);
+  double distance_m = METER(distance);
 
-  a = 4 * pow(link_distance_m, 2);
+  a = 4 * pow(distance_m, 2);
   b = pow(wavenumber, 2) * pow(telescope_aperture, 2);
   c = pow(telescope_aperture, 2);
-  d = 4 * pow(link_distance_m, 2);
+  d = 4 * pow(distance_m, 2);
   e = pow(wavenumber * coherence_length, 2);
   f = pow(1 - 0.62 * (pow(coherence_length / telescope_aperture, 1 / 3)), 6 / 5);
 
@@ -99,17 +99,17 @@ double Tools::turbulence_strength(double height_above_sea_level, double wind_spe
 /**
  * @brief Calculates the targeting error of the beam.
  * 
- * @param link_distance double - the distance between the emitter and the receiver (km)
+ * @param distance double - the distance between the emitter and the receiver (km)
  * @param angular_error double - the deviation from the optimal direction (μrad)
  * @return double - the deviation from the receiver (m)
  */
-double Tools::targeting_error(double link_distance, double angular_error){
+double Tools::targeting_error(double distance, double angular_error){
 
   double a,b;
 
-  double link_distance_m = METER(link_distance);
+  double distance_m = METER(distance);
 
-  a = link_distance_m * angular_error;
+  a = distance_m * angular_error;
   b = pow(10, -6);
 
   return a * b;
@@ -183,4 +183,70 @@ double Tools::static_loss(std::vector <double> molecular_scattering, std::vector
   }
 
   return exp((-1) * sum_of_layers);
+}
+
+double Tools::beam_widening_earth_space(double wave_length, std::vector<double> sectors, double distance, double wind_speed, double zenith){
+  
+  double a, b, c, d, e;
+  double t0, t1;
+
+  double distance_m = METER(distance);
+  double wavenumber = WAVE(wave_length);
+  
+  double sum = 0;
+
+  for (int i = 0; i < sectors.size() - 1; i++) {    
+
+    t0 = turbulence_strength(sectors[i], wind_speed);
+    t1 = turbulence_strength(sectors[i + 1], wind_speed);
+    
+    a = pow(1 - (sectors[i] / (distance * cos(RADIAN(zenith)))), 5 / 3);
+    b = pow(1 - (sectors[i + 1] / (distance * cos(RADIAN(zenith)))), 5 / 3);
+    c = (t0 * a + t1 * b) / 2;
+    d = abs((sectors[i + 1] - sectors[i]) / cos(RADIAN(zenith)));
+    e = c * d;
+
+    sum += e;
+  }
+
+  sum = 1.46 * pow(wavenumber, 2) * sum;
+
+  if(sum < 0){
+  
+    sum *= (-1);
+    sum = pow(sum, (-0.6));
+    sum *= (-1);
+    return sum;
+  
+  }else{
+    return pow(sum, (-0.6));
+  }
+}
+
+double Tools::beam_widening_space_earth(double wave_length, std::vector<double> sectors, double distance, double wind_speed, double zenith){
+
+  double a, b, c, d, e;
+  double t0, t1;
+
+  double distance_m = METER(distance);
+  double wavenumber = WAVE(wave_length);
+  
+  double sum = 0;
+
+  for(int i = 0; i < sectors.size() - 1; i++){
+
+    t0 = turbulence_strength(sectors[i], wind_speed);
+    t1 = turbulence_strength(sectors[i + 1], wind_speed);
+
+    a = pow(1 - (distance - (sectors[i] / cos(RADIAN(zenith))) / distance), 5 / 3);
+    b = pow(1 - (distance - (sectors[i + 1] / cos(RADIAN(zenith))) / distance), 5 / 3);
+    c = (t0 * a + t1 * b) / 2;
+    d = abs(sectors[i + 1] - sectors[i] / cos(RADIAN(zenith)));
+    e = c * d;
+
+    sum +=  e;
+  }
+
+  return pow(1.46 * pow(wavenumber, 2) * sum, -(0.6));
+
 }
