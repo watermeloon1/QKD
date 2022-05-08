@@ -1,11 +1,18 @@
 #include "../include/QProtocol.hpp"
 #include "../include/Values.hpp"
+#include "../include/Tools.hpp"
 #include <iostream>
 #include <fstream>
 
-QProtocol::QProtocol(double height_above_sea_level, double zenith){
+QProtocol::QProtocol(double height_above_sea_level, double distance){
+    
+    Tools *tools = new Tools();
+
+    zenith = tools -> zenith(height_above_sea_level, distance);
     init_distance(height_above_sea_level, zenith);
     read_from_file();
+
+    delete tools;
 }
 
 /**
@@ -118,7 +125,7 @@ void QProtocol::read_from_file(){
     char separator = ';';
 
     // Open an existing file
-    fin.open("../resources/asv_860.csv");
+    fin.open("resource/asv_860.csv");
     
     while(!fin.eof()){
 
@@ -158,19 +165,29 @@ void QProtocol::read_from_file(){
     fin.close();
 }
 
+//-------------GETTERS-------------//
+
 std::vector<double> QProtocol::get_molecular_scattering(){
     return this -> molecular_scattering;
+}
+
+std::vector<double> QProtocol::get_layers(){
+    return this -> layers;
 }
 
 double QProtocol::get_zenith(){
     return this -> zenith;
 }
 
+//-------------SETTERS-------------//
+
 void QProtocol::set_direction(int direction){
     this -> direction = direction;
 }
 
-void QProtocol::set_weather(std::string weather){
+void QProtocol::set_scenario(std::string climate, std::string season, std::string weather){
+    this -> climate = climate;
+    this -> climate = climate;
     this -> weather = weather;
 }
 
@@ -181,6 +198,55 @@ void QProtocol::set_climate(std::string climate){
 void QProtocol::set_season(std::string season){
     this -> season = season;
 }
+
+void QProtocol::set_weather(std::string weather){
+    this -> weather = weather;
+}
+
+void QProtocol::set_wave_length(double wave_length){
+    this -> wave_length = wave_length;
+}
+
+void QProtocol::set_windspeed(double windspeed){
+    this -> windspeed = windspeed;
+}
+
+void QProtocol::set_aperture_diameter(double aperture_diameter){
+    this -> aperture_diameter = aperture_diameter;
+}
+
+void QProtocol::set_targeting_angular_error(double targeting_angular_error){
+    this -> targeting_angular_error = targeting_angular_error;
+}
+
+void QProtocol::set_mirror_diameter(double mirror_diameter){
+    this -> mirror_diameter = mirror_diameter;
+}
+
+void QProtocol::set_space_space_channel_length(double space_space_channel_length){
+    this -> space_space_channel_length = space_space_channel_length;
+}
+
+void QProtocol::set_quantum_efficiency_of_detector(double quantum_efficiency_of_detector){
+    this -> quantum_efficiency_of_detector = quantum_efficiency_of_detector;
+}
+void QProtocol::set_mean_photon_number_of_signal(double mean_photon_number_of_signal){
+    this -> mean_photon_number_of_signal = mean_photon_number_of_signal;
+}
+
+void QProtocol::set_probability_of_polarization_measurement_error(double probability_of_polarization_measurement_error){
+    this -> probability_of_polarization_measurement_error = probability_of_polarization_measurement_error;
+}
+
+void QProtocol::set_noise(double noise){
+    this -> noise = noise;
+}
+
+void QProtocol::set_number_of_detectors(double number_of_detectors){
+    this -> number_of_detectors = number_of_detectors;
+}
+
+//-------------COUT-------------//
 
 void QProtocol::cout_distance_sectors(){
     for(int i = 0; i < distance_sectors.size(); i++){
