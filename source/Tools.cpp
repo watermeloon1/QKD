@@ -85,8 +85,6 @@ double Tools::turbulence_strength(double height_above_sea_level, double wind_spe
   
   double a, b, c, d, e;
 
-  double A = 1.7 * pow(10, -14);
-
   a = 0.00594 * pow((wind_speed / 27), 2);
   b = pow(height_above_sea_level * pow(10, -5), 10);
   c = exp(height_above_sea_level / -1000);

@@ -5,6 +5,7 @@
 #define EARTH_SPACE 0
 #define SPACE_EARTH 1
 #define SPACE_SPACE 2
+#define A  (1.7 * pow(10, -14))
 
 /**
  * @brief Converts radians to degrees.

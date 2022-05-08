@@ -47,7 +47,7 @@ class QProtocol{
 	    std::string season; //SET
 	    std::string weather; //SET
 
-		void init_distance(double height_above_sea_level, double zenith); 
+		void init_distance_sectors(double height_above_sea_level); 
 		void read_from_file();
 
 		//double frequency_of_laser_firing;
@@ -61,7 +61,7 @@ class QProtocol{
 
 	public: 
 
-		QProtocol(double height_above_sea_level, double distance); // constructor
+		QProtocol(double height_above_sea_level, double distance, int direction); // constructor
 		~QProtocol(); // destructor
 
 		std::vector<double> get_molecular_scattering();
@@ -71,7 +71,7 @@ class QProtocol{
 		void set_direction(int direction);
 
 		void set_wave_length(double wave_length);
-		void set_windspeed(double windspeed);
+		void set_windspeed(double windspeed = 21);
 		void set_aperture_diameter(double aperture_diameter);
 		void set_targeting_angular_error(double targeting_angular_error);
 		void set_mirror_diameter(double mirror_diameter);
@@ -82,13 +82,12 @@ class QProtocol{
 		void set_noise(double noise);
 		void set_number_of_detectors(double number_of_detectors);
 
-
 		void set_scenario(std::string climate, std::string season, std::string weather);
 		void set_climate(std::string climate);
 		void set_season(std::string season);
 		void set_weather(std::string weather);
 
-		void cout_distance_sectors();
+		void cout_details();
 };
 
 #endif

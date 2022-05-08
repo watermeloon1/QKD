@@ -4,12 +4,17 @@
 #include <iostream>
 #include <fstream>
 
-QProtocol::QProtocol(double height_above_sea_level, double distance){
+QProtocol::QProtocol(double height_above_sea_level, double distance, int direction){
     
     Tools *tools = new Tools();
 
-    zenith = tools -> zenith(height_above_sea_level, distance);
-    init_distance(height_above_sea_level, zenith);
+    this -> zenith = tools -> zenith(height_above_sea_level, distance);
+    this -> distance = distance;
+    this -> height_above_sea_level = height_above_sea_level;
+
+    this -> direction = direction;
+
+    init_distance_sectors(height_above_sea_level);
     read_from_file();
 
     delete tools;
@@ -19,27 +24,22 @@ QProtocol::QProtocol(double height_above_sea_level, double distance){
  * @brief Initialises the distance and the sectors of the distance.
  *  
  * @param height_above_sea_level - the position of the sattelite
- * @param zenith - the zenith angle of the beam hitting Earth ( °)
  */
-void QProtocol::init_distance(double height_above_sea_level, double zenith){
+void QProtocol::init_distance_sectors(double height_above_sea_level){
 
-    double a, b, c, d;
+    //double a, b, c, d;
 
-    this -> height_above_sea_level = height_above_sea_level;
-    this -> zenith = zenith;
+    //a = pow(EARTH_RADIUS, 2) * pow(cos(RADIAN(zenith)), 2);
+    //b = 2 * EARTH_RADIUS * height_above_sea_level;
+    //c = pow(height_above_sea_level, 2);
+    //d = EARTH_RADIUS * cos(RADIAN(zenith));
 
-    a = pow(EARTH_RADIUS, 2) * pow(cos(RADIAN(zenith)), 2);
-    b = 2 * EARTH_RADIUS * height_above_sea_level;
-    c = pow(height_above_sea_level, 2);
-    d = EARTH_RADIUS * cos(RADIAN(zenith));
-
-    this -> distance =  sqrt(a + b + c) - d;
+    //this -> distance =  sqrt(a + b + c) - d;
 
     std::cout << "Total distance: " << this -> distance << std::endl;
-
     double distance_temp = this -> distance;
 
-    this -> distance_sectors.push_back(0);
+    distance_sectors.push_back(0);
 
     for(int i = 0; distance_temp > 0; i++){
         if(distance_sectors[i] < 1000){
@@ -63,6 +63,7 @@ void QProtocol::init_distance(double height_above_sea_level, double zenith){
             continue;
         }    
     }
+
     distance_sectors[distance_sectors.size()-1] += distance_temp;
 
     //std::cout << "distance_temp: " << distance_temp << std::endl;
@@ -248,10 +249,8 @@ void QProtocol::set_number_of_detectors(double number_of_detectors){
 
 //-------------COUT-------------//
 
-void QProtocol::cout_distance_sectors(){
-    for(int i = 0; i < distance_sectors.size(); i++){
-        std::cout << distance_sectors[i] << std::endl;
-    }
+void QProtocol::cout_details(){
+
 }
 
 QProtocol::~QProtocol(){}
