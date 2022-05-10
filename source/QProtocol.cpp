@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-QProtocol::QProtocol(double height_above_sea_level, double distance, int direction)
+QProtocol::QProtocol(double height_above_sea_level, double distance)
 {
 
 	Tools *tools = new Tools();
@@ -12,8 +12,6 @@ QProtocol::QProtocol(double height_above_sea_level, double distance, int directi
 	this->zenith = tools->zenith(height_above_sea_level, distance);
 	this->distance = distance;
 	this->height_above_sea_level = height_above_sea_level;
-
-	this->direction = direction;
 
 	init_distance_sectors(height_above_sea_level);
 	read_from_file();
@@ -205,11 +203,20 @@ double QProtocol::get_zenith()
 	return this->zenith;
 }
 
+int QProtocol::get_direction()
+{
+	std::cout << "qber_value" << std::endl;
+	return this->direction;
+}
+
 //-------------SETTERS-------------//
 
 void QProtocol::set_direction(int direction)
 {
 	this->direction = direction;
+	std::cout << "set_direction" << std::endl;
+	std::cout << "direction: " << direction << std::endl;
+	std::cout << "this.direction: " << this -> direction << std::endl;
 }
 
 void QProtocol::set_scenario(std::string climate, std::string season, std::string weather)

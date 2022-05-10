@@ -61,12 +61,13 @@ protected:
 	virtual void qber() = 0;
 
 public:
-	QProtocol(double height_above_sea_level, double distance, int direction); // constructor
+	QProtocol(double height_above_sea_level, double distance); // constructor
 	~QProtocol();															  // destructor
 
 	std::vector<double> get_molecular_scattering();
 	std::vector<double> get_layers();
 	double get_zenith();
+	int get_direction();
 
 	void set_direction(int direction);
 
