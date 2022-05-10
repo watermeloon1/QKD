@@ -21,16 +21,12 @@ std::string BB84::get_protocol_name()
 void BB84::qber()
 {
 
-	std::cout << "benne" << std::endl;
 	Tools *tools = new Tools();
-	std::cout << "benne" << std::endl;
 	
-	std::cout << "this.dir" << this -> direction << std::endl;
 	switch (this -> direction)
 	{
-	std::cout << "benne" << std::endl;
 	
-	case 0:
+	case EARTH_SPACE:
 		static_loss = tools->static_loss(molecular_scattering, molecular_absorption, aerosol_scattering, aerosol_absorption, layers, zenith);
 		coherence_length = tools->beam_widening_earth_space(wave_length, distance_sectors, distance, windspeed, zenith);
 		beam_widening = tools->beam_widening_atmosphere(distance, wave_length, coherence_length, aperture_diameter);

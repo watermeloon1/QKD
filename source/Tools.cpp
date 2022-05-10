@@ -168,6 +168,7 @@ double Tools::dynamic_loss(double total_scattering, double mirror_radius)
  * @param layers_of_air - the atmosphere of Earth divided into layers on top of each other
  * @param zenith - the zenith angle of the beam hitting Earth ( °)
  * @return double - the sum of static loss in all of the layers
+ * TODO: correction
  */
 double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<double> molecular_absorption,
 						  std::vector<double> aerosol_scattering, std::vector<double> aerosol_absorption, std::vector<double> layers_of_air, double zenith)
@@ -175,7 +176,7 @@ double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<
 
 	std::vector<double> scattering(molecular_scattering.size());
 
-	for (int i; i < molecular_scattering.size(); i++)
+	for (int i = 0; i < molecular_scattering.size(); i++)
 	{
 		scattering[i] = molecular_scattering[i] + aerosol_scattering[i];
 	}
@@ -189,7 +190,7 @@ double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<
 
 	double sum_of_layers = 0;
 
-	for (int i; i < layers_of_air.size(); i++)
+	for (int i = 0; i < layers_of_air.size(); i++)
 	{
 		sum_of_layers = sum_of_layers + (((scattering[i] + scattering[i + 1]) / 2) + ((absorption[i] + absorption[i + 1]) / 2)) *
 											((layers_of_air[i + 1] - layers_of_air[i]) / cos(zenith * (PI / 180)));

@@ -23,10 +23,8 @@ int main()
 	q->set_probability_of_polarization_measurement_error(probability_of_polarization_measurement_error);
 	q->set_noise(noise);
 	q->set_number_of_detectors(number_of_detectors);
-	std::cout << "penisz" << std::endl;
 
 	q->qber();
-
 
 	int dir = q->get_direction();
 	std::cout << dir << std::endl;
