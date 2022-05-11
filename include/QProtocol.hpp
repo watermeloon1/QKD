@@ -72,7 +72,7 @@ public:
 	void set_direction(int direction);
 
 	void set_wave_length(double wave_length);
-	void set_wind_speed(double windspeed = 21);
+	void set_wind_speed(double wind_speed = 21);
 	void set_aperture_diameter(double aperture_diameter);
 	void set_targeting_angular_error(double targeting_angular_error);
 	void set_mirror_diameter(double mirror_diameter);
@@ -88,7 +88,7 @@ public:
 	void set_season(std::string season);
 	void set_weather(std::string weather);
 
-	void cout_details();
+	void print_figures();
 };
 
 #endif

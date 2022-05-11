@@ -15,6 +15,18 @@ QProtocol::QProtocol(double height_above_sea_level, double distance)
 	init_distance_sectors();
     set_scenario("Midlatitude","Summer", "Clear");
 	read_from_file();
+	set_direction(EARTH_SPACE);
+	set_wave_length(wave_length);
+	set_wind_speed(wind_speed);
+	set_aperture_diameter(aperture_diameter);
+	set_targeting_angular_error(targeting_angular_error);
+	set_mirror_diameter(mirror_diameter);
+	set_space_space_channel_length(space_space_channel_length);
+	set_quantum_efficiency_of_detector(quantum_efficiency_of_detector);
+	set_mean_photon_number_of_signal(mean_photon_number_of_signal);
+	set_probability_of_polarization_measurement_error(probability_of_polarization_measurement_error);
+	set_noise(noise);
+	set_number_of_detectors(number_of_detectors);
 }
 
 void QProtocol::qber() {std::cout << "QBER values were not generated" << std::endl;}
@@ -33,10 +45,8 @@ void QProtocol::init_distance_sectors()
 	// b = 2 * EARTH_RADIUS * height_above_sea_level;
 	// c = pow(height_above_sea_level, 2);
 	// d = EARTH_RADIUS * cos(RADIAN(zenith));
-
 	// this -> distance =  sqrt(a + b + c) - d;
 
-	std::cout << "Total distance: " << this->distance << std::endl;
 	double distance_temp = this->distance;
 
 	distance_sectors.push_back(0);
@@ -70,9 +80,6 @@ void QProtocol::init_distance_sectors()
 	}
 
 	distance_sectors[distance_sectors.size() - 1] += distance_temp;
-
-	// std::cout << "distance_temp: " << distance_temp << std::endl;
-	std::cout << "Number of sectors:" << distance_sectors.size() << std::endl;
 }
 
 /**
@@ -136,7 +143,7 @@ void QProtocol::read_from_file()
 	char separator = ';';
 
 	// Open an existing file
-	fin.open("../resource/asv_860.csv");
+	fin.open("resource/asv_860.csv");
 
 	while (!fin.eof())
 	{
@@ -205,7 +212,6 @@ double QProtocol::get_zenith()
 
 int QProtocol::get_direction()
 {
-	std::cout << "qber_value" << std::endl;
 	return this->direction;
 }
 
@@ -214,9 +220,6 @@ int QProtocol::get_direction()
 void QProtocol::set_direction(int direction)
 {
 	this->direction = direction;
-	std::cout << "set_direction" << std::endl;
-	std::cout << "direction: " << direction << std::endl;
-	std::cout << "this.direction: " << this -> direction << std::endl;
 }
 
 void QProtocol::set_scenario(std::string climate, std::string season, std::string weather)
@@ -246,9 +249,9 @@ void QProtocol::set_wave_length(double wave_length)
 	this->wave_length = wave_length;
 }
 
-void QProtocol::set_wind_speed(double windspeed)
+void QProtocol::set_wind_speed(double wind_speed)
 {
-	this->wind_speed = windspeed;
+	this->wind_speed = wind_speed;
 }
 
 void QProtocol::set_aperture_diameter(double aperture_diameter)
@@ -297,8 +300,11 @@ void QProtocol::set_number_of_detectors(double number_of_detectors)
 
 //-------------COUT-------------//
 
-void QProtocol::cout_details()
+void QProtocol::print_figures()
 {
+
+	
+
 }
 
 QProtocol::~QProtocol() {}
