@@ -171,7 +171,7 @@ double Tools::dynamic_loss(double total_scattering, double mirror_radius)
  * TODO: correction
  */
 double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<double> molecular_absorption,
-						  std::vector<double> aerosol_scattering, std::vector<double> aerosol_absorption, std::vector<double> layers_of_air, double zenith)
+						  std::vector<double> aerosol_scattering, std::vector<double> aerosol_absorption, std::vector<double> layers, double zenith)
 {
 
 	std::vector<double> scattering(molecular_scattering.size());
@@ -190,10 +190,10 @@ double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<
 
 	double sum_of_layers = 0;
 
-	for (int i = 0; i < layers_of_air.size() - 1; i++)
+	for (int i = 0; i < layers.size() - 1; i++)
 	{
-		sum_of_layers = sum_of_layers + (((scattering[i] + scattering[i + 1]) / 2) + ((absorption[i] + absorption[i + 1]) / 2)) *
-											((layers_of_air[i + 1] - layers_of_air[i]) / cos(zenith * (PI / 180)));
+		sum_of_layers += (((scattering[i] + scattering[i + 1]) / 2) + ((absorption[i] + absorption[i + 1]) / 2)) *
+											((layers[i + 1] - layers[i]) / cos(zenith * (PI / 180)));
 	}
 
 	return exp((-1) * sum_of_layers);
