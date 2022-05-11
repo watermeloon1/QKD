@@ -58,7 +58,7 @@ protected:
 	// double static_loss_bob_to_alice;
 
 	virtual std::string get_protocol_name() = 0;
-	virtual void qber() = 0;
+	virtual void qber();
 
 public:
 	QProtocol(double height_above_sea_level, double distance); // constructor

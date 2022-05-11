@@ -7,17 +7,17 @@
 QProtocol::QProtocol(double height_above_sea_level, double distance)
 {
 
-	Tools *tools = new Tools();
-
-	this->zenith = tools->zenith(height_above_sea_level, distance);
+	Tools tools;
+	this->zenith = tools.zenith(height_above_sea_level, distance);
 	this->distance = distance;
 	this->height_above_sea_level = height_above_sea_level;
 
 	init_distance_sectors();
+    set_scenario("Midlatitude","Summer", "Clear");
 	read_from_file();
-
-	delete tools;
 }
+
+void QProtocol::qber() {std::cout << "QBER values were not generated" << std::endl;}
 
 /**
  * @brief Initialises the distance and the sectors of the distance.
@@ -136,7 +136,7 @@ void QProtocol::read_from_file()
 	char separator = ';';
 
 	// Open an existing file
-	fin.open("resource/asv_860.csv");
+	fin.open("../resource/asv_860.csv");
 
 	while (!fin.eof())
 	{
@@ -153,6 +153,7 @@ void QProtocol::read_from_file()
 			{
 				this->molecular_absorption.push_back(atof(line_cells[2].c_str()));
 				this->molecular_scattering.push_back(atof(line_cells[3].c_str()));
+                std::cout << molecular_scattering.size() << std::endl;
 			}
 			else if (this->climate.compare("Midlatitude") == 0)
 			{
