@@ -20,7 +20,12 @@ int main()
 	q->set_noise(noise);
 	q->set_number_of_detectors(number_of_detectors);
 
+	std::string name = q->get_protocol_name();
+	std::cout << name << std::endl;
+
+	std::cout << "before" << std::endl;
 	q->qber();
+	std::cout << "after" << std::endl;
 
 	int dir = q->get_direction();
 	std::cout << dir << std::endl;
