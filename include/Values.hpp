@@ -15,9 +15,9 @@ static double wave_length = 860; // nm
 static double wave_length_MIN = 800; // nm
 static double wave_length_MAX = 1200; // nm
 
-static double windspeed = 21; // m/s
-static double windspeed_MIN = 15; // m/s
-static double windspeed_MAX = 25; // m/s
+static double wind_speed = 21; // m/s
+static double wind_speed_MIN = 15; // m/s
+static double wind_speed_MAX = 25; // m/s
 
 static double aperture_diameter = 0.2; // m
 static double aperture_diameter_MIN = 0.1; // m

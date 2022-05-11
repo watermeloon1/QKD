@@ -25,10 +25,12 @@ void BB84::qber()
 	
 	switch (this -> direction)
 	{
+
+	std::cout << "switch" << std::endl;
 	
 	case EARTH_SPACE:
 		static_loss = tools->static_loss(molecular_scattering, molecular_absorption, aerosol_scattering, aerosol_absorption, layers, zenith);
-		coherence_length = tools->beam_widening_earth_space(wave_length, distance_sectors, distance, windspeed, zenith);
+		coherence_length = tools->beam_widening_earth_space(wave_length, distance_sectors, distance, wind_speed, zenith);
 		beam_widening = tools->beam_widening_atmosphere(distance, wave_length, coherence_length, aperture_diameter);
 		targeting_error = tools->targeting_error(distance, targeting_angular_error);
 		total_scattering = tools->total_scattering(beam_widening, targeting_error);
@@ -38,7 +40,7 @@ void BB84::qber()
 
 	case SPACE_EARTH:
 		static_loss = tools->static_loss(molecular_scattering, molecular_absorption, aerosol_scattering, aerosol_absorption, layers, zenith);
-		coherence_length = tools->beam_widening_space_earth(wave_length, distance_sectors, distance, windspeed, zenith);
+		coherence_length = tools->beam_widening_space_earth(wave_length, distance_sectors, distance, wind_speed, zenith);
 		beam_widening = tools->beam_widening_atmosphere(distance, wave_length, coherence_length, aperture_diameter);
 		targeting_error = tools->targeting_error(distance, targeting_angular_error);
 		total_scattering = tools->total_scattering(beam_widening, targeting_error);

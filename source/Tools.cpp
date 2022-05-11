@@ -183,14 +183,14 @@ double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<
 
 	std::vector<double> absorption(molecular_absorption.size());
 
-	for (int i; i < molecular_absorption.size(); i++)
+	for (int i = 0; i < molecular_absorption.size(); i++)
 	{
 		absorption[i] = molecular_absorption[i] + aerosol_absorption[i];
 	}
 
 	double sum_of_layers = 0;
 
-	for (int i = 0; i < layers_of_air.size(); i++)
+	for (int i = 0; i < layers_of_air.size() - 1; i++)
 	{
 		sum_of_layers = sum_of_layers + (((scattering[i] + scattering[i + 1]) / 2) + ((absorption[i] + absorption[i + 1]) / 2)) *
 											((layers_of_air[i + 1] - layers_of_air[i]) / cos(zenith * (PI / 180)));

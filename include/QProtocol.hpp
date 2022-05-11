@@ -23,7 +23,7 @@ protected:
 	double zenith; // the zenith angle of the beam
 
 	double wave_length;									  // SET
-	double windspeed;									  // SET
+	double wind_speed;									  // SET
 	double aperture_diameter;							  // SET
 	double targeting_angular_error;						  // SET
 	double mirror_diameter;								  // SET
@@ -72,7 +72,7 @@ public:
 	void set_direction(int direction);
 
 	void set_wave_length(double wave_length);
-	void set_windspeed(double windspeed = 21);
+	void set_wind_speed(double windspeed = 21);
 	void set_aperture_diameter(double aperture_diameter);
 	void set_targeting_angular_error(double targeting_angular_error);
 	void set_mirror_diameter(double mirror_diameter);

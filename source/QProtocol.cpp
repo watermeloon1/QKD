@@ -246,9 +246,9 @@ void QProtocol::set_wave_length(double wave_length)
 	this->wave_length = wave_length;
 }
 
-void QProtocol::set_windspeed(double windspeed)
+void QProtocol::set_wind_speed(double windspeed)
 {
-	this->windspeed = windspeed;
+	this->wind_speed = windspeed;
 }
 
 void QProtocol::set_aperture_diameter(double aperture_diameter)

@@ -13,7 +13,7 @@ int main()
 	BB84 *q = new BB84(20000, 21000);
 	q->set_direction(EARTH_SPACE);
 	q->set_wave_length(wave_length);
-	q->set_windspeed(windspeed);
+	q->set_wind_speed(wind_speed);
 	q->set_aperture_diameter(aperture_diameter);
 	q->set_targeting_angular_error(targeting_angular_error);
 	q->set_mirror_diameter(mirror_diameter);
