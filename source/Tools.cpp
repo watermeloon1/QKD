@@ -5,8 +5,8 @@
 /**
  * @brief Calculates the zenit angle of the beam hitting/leaving the surface of Earth.
  *
- * @param distance_to_earth - the shortest distance between the sattelite and the surface of Earth (km)
- * @param distance_to_base - the shortest distance between the sattelite and the communicating base (km)
+ * @param distance_to_earth - the shortest distance between the satellite and the surface of Earth (km)
+ * @param distance_to_base - the shortest distance between the satellite and the communicating base (km)
  * @return double - the zenith angle of the beam hitting Earth ( °)
  */
 double Tools::zenith(double distance_to_earth, double distance_to_base)
@@ -82,7 +82,7 @@ double Tools::beam_widening_atmosphere(double distance, double telescope_apertur
 }
 
 /**
- * @brief The strength of the turbulence in the atmospheare of Earth.
+ * @brief The strength of the turbulence in the atmosphere of Earth.
  *
  * @param height_above_sea_level - the height of the observed position (km)
  * @param wind_speed - the speed of the wind at the given height (m/s)

@@ -95,7 +95,7 @@ int length(std::string string)
  * @brief Splits a sting into substrings with a given separator.
  *
  * @param string - the string that needs to be splitted
- * @param seperator - a separator character, that parses the string
+ * @param separator - a separator character, that parses the string
  * @return std::vector<std::string> - the vector of substrings
  */
 std::vector<std::string> split(std::string string, char separator)
@@ -121,7 +121,7 @@ std::vector<std::string> split(std::string string, char separator)
 }
 
 /**
- * @brief Reads from the given resource file, that containis the values for the different scenarios.
+ * @brief Reads from the given resource file, that contains the values for the different scenarios.
  *
  */
 void QProtocol::read_from_file()

@@ -1,5 +1,6 @@
 #ifndef BB84_HPP
 #define BB84_HPP
+#include "QProtocol.hpp"
 
 class BB84 : public QProtocol
 {
