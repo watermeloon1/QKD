@@ -1,11 +1,7 @@
 #include <iostream>
-#include "../include/Tools.hpp"
 #include "../include/QProtocol.hpp"
 #include "../include/BB84.hpp"
 #include "../include/Values.hpp"
-
-#include <fstream>
-#include <vector>
 
 int main()
 {

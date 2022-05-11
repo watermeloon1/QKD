@@ -13,7 +13,7 @@ QProtocol::QProtocol(double height_above_sea_level, double distance)
 	this->distance = distance;
 	this->height_above_sea_level = height_above_sea_level;
 
-	init_distance_sectors(height_above_sea_level);
+	init_distance_sectors();
 	read_from_file();
 
 	delete tools;
@@ -24,7 +24,7 @@ QProtocol::QProtocol(double height_above_sea_level, double distance)
  *
  * @param height_above_sea_level - the position of the sattelite
  */
-void QProtocol::init_distance_sectors(double height_above_sea_level)
+void QProtocol::init_distance_sectors()
 {
 
 	// double a, b, c, d;
@@ -101,7 +101,7 @@ int length(std::string string)
 std::vector<std::string> split(std::string string, char separator)
 {
 	int i = 0;
-	int startIndex = 0, endIndex = 0;
+	int startIndex = 0, endIndex;
 	std::vector<std::string> strings;
 
 	while (i <= length(string))
@@ -133,7 +133,6 @@ void QProtocol::read_from_file()
 	std::string line;
 	int line_position = 0;
 
-	std::vector<std::string> line_cells;
 	char separator = ';';
 
 	// Open an existing file
@@ -222,7 +221,7 @@ void QProtocol::set_direction(int direction)
 void QProtocol::set_scenario(std::string climate, std::string season, std::string weather)
 {
 	this->climate = climate;
-	this->climate = climate;
+	this->season = season;
 	this->weather = weather;
 }
 

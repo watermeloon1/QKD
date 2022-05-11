@@ -48,7 +48,7 @@ protected:
 	std::string season;	 // SET
 	std::string weather; // SET
 
-	void init_distance_sectors(double height_above_sea_level);
+	void init_distance_sectors();
 	void read_from_file();
 
 	// double frequency_of_laser_firing;

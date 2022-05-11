@@ -226,8 +226,8 @@ double Tools::beam_widening_earth_space(double wavelength, std::vector<double> s
 		t0 = turbulence_strength(sectors[i], wind_speed);
 		t1 = turbulence_strength(sectors[i + 1], wind_speed);
 
-		a = pow(1 - (sectors[i] / (distance * cos(RADIAN(zenith)))), 5 / 3);
-		b = pow(1 - (sectors[i + 1] / (distance * cos(RADIAN(zenith)))), 5 / 3);
+		a = pow(1 - (sectors[i] / (distance_m * cos(RADIAN(zenith)))), 5 / 3);
+		b = pow(1 - (sectors[i + 1] / (distance_m * cos(RADIAN(zenith)))), 5 / 3);
 		c = (t0 * a + t1 * b) / 2;
 		d = abs((sectors[i + 1] - sectors[i]) / cos(RADIAN(zenith)));
 		e = c * d;
@@ -278,8 +278,8 @@ double Tools::beam_widening_space_earth(double wavelength, std::vector<double> s
 		t0 = turbulence_strength(sectors[i], wind_speed);
 		t1 = turbulence_strength(sectors[i + 1], wind_speed);
 
-		a = pow(1 - (distance - (sectors[i] / cos(RADIAN(zenith))) / distance), 5 / 3);
-		b = pow(1 - (distance - (sectors[i + 1] / cos(RADIAN(zenith))) / distance), 5 / 3);
+		a = pow(1 - (distance_m - (sectors[i] / cos(RADIAN(zenith))) / distance_m), 5 / 3);
+		b = pow(1 - (distance_m - (sectors[i + 1] / cos(RADIAN(zenith))) / distance_m), 5 / 3);
 		c = (t0 * a + t1 * b) / 2;
 		d = abs(sectors[i + 1] - sectors[i] / cos(RADIAN(zenith)));
 		e = c * d;
