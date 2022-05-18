@@ -3,11 +3,10 @@
 #include "../include/BB84.hpp"
 #include "../include/Values.hpp"
 
-int main()
+int main(void)
 {
 
-	BB84 *q = new BB84(20000, 21000);
-
+	BB84 *q = new BB84(789, 925);
 	delete q;
 
 	return 0;

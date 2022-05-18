@@ -4,29 +4,78 @@
 #include <iostream>
 #include <fstream>
 
+float round_decimal(double number, int decimal_place){
+	return ceil(number * (pow(10, decimal_place))) / pow(10, decimal_place);
+}
+
 QProtocol::QProtocol(double height_above_sea_level, double distance)
 {
 
 	Tools tools;
+	std::cout << "Calculating zenith angle..." << std::endl;
 	this->zenith = tools.zenith(height_above_sea_level, distance);
-	this->distance = distance;
-	this->height_above_sea_level = height_above_sea_level;
+	std::cout << "Zenith angle is: " << this->zenith << "°" << std::endl << std::endl;
 
+	std::cout << "Calculating distance..." << std::endl;
+	this->distance = distance;
+	std::cout << "Distance is: " << this->distance << " km" << std::endl << std::endl;
+
+	std::cout << "Calculating height above sea level..." << std::endl;
+	this->height_above_sea_level = height_above_sea_level;
+	std::cout << "Height above sea level is: " << this->height_above_sea_level << " km" << std::endl << std::endl;
+
+	std::cout << "Initialising conditions..." << std::endl;
+	set_conditions("Midlatitude","Summer", "Clear");
+	std::cout << "Climate: " << this->climate << std::endl;
+	std::cout << "Season: " << this->season << std::endl;
+	std::cout << "Weather: " << this->weather << std::endl << std::endl;
+	
+	std::cout << "Initialising sectors..." << std::endl;
 	init_distance_sectors();
-    set_scenario("Midlatitude","Summer", "Clear");
+	for(int i = 1; i < this->distance_sectors.size(); ++i){
+		std::cout << i << ".";
+		if(i < 10){std::cout << " ";}
+		std::cout << " sector: " << this->distance_sectors[i-1] << " - " << this->distance_sectors[i] << " km"<< std::endl;
+	}
+	std::cout << std::endl;
+
+	std::cout << "Reading from file..." << std::endl << std::endl;
 	read_from_file();
+	
+	std::cout << "\tMOLECULAR\tMOLECULAR\tAEROSOL\t\tAEROSOL" << std::endl;
+	std::cout << "LAYERS\tSCATTERING\tABSORPTION\tSCATTERING\tABSORPTION" << std::endl << std::endl;
+
+	for(int i = 1; i < this->layers.size(); ++i){
+		std::cout << this->layers[i] << "\t" << round_decimal(molecular_scattering[i], 5) << "\t\t" << round_decimal(this->molecular_absorption[i], 5) << "\t\t" << round_decimal(this->aerosol_scattering[i], 5) << "\t\t" << round_decimal(this->aerosol_absorption[i], 5) << std::endl;
+	}
+
 	set_direction(EARTH_SPACE);
-	set_wave_length(wave_length);
-	set_wind_speed(wind_speed);
-	set_aperture_diameter(aperture_diameter);
-	set_targeting_angular_error(targeting_angular_error);
-	set_mirror_diameter(mirror_diameter);
-	set_space_space_channel_length(space_space_channel_length);
-	set_quantum_efficiency_of_detector(quantum_efficiency_of_detector);
-	set_mean_photon_number_of_signal(mean_photon_number_of_signal);
-	set_probability_of_polarization_measurement_error(probability_of_polarization_measurement_error);
-	set_noise(noise);
-	set_number_of_detectors(number_of_detectors);
+	set_wave_length(WAVELENGTH);
+	set_wind_speed(WINDSPEED);
+	set_aperture_diameter(APERTURE_DIAM);
+	set_targeting_angular_error(TARGETING_ANGULAR_ERROR);
+	set_mirror_diameter(MIRROR_DIAM);
+	set_space_space_channel_length(SPACE_SPACE_CHAN_LENGTH);
+	set_quantum_efficiency_of_detector(DETECTOR_QEFF);
+	set_mean_photon_number_of_signal(SIGNAL_MEANPHN);
+	set_probability_of_polarization_measurement_error(PROB_PME);
+	set_noise(NOISE);
+	set_number_of_detectors(DETECTOR_NUM);
+	
+	std::cout << std::endl << "DEFAULT VALUES " << std::endl;
+	std::cout << "--------------" << std::endl;
+	std::cout << "Wavelength: " << WAVELENGTH << std::endl;
+	std::cout << "Windspeed: " << WINDSPEED << std::endl;
+	std::cout << "Aperture diameter: " << APERTURE_DIAM << std::endl;
+	std::cout << "Targeting angular error: "  << TARGETING_ANGULAR_ERROR << std::endl;
+	std::cout << "Mirror diameter: " << MIRROR_DIAM << std::endl;
+	std::cout << "Space-space channel length: " << SPACE_SPACE_CHAN_LENGTH << std::endl;
+	std::cout << "Quantum efficiency of detector: " << DETECTOR_QEFF << std::endl;
+	std::cout << "Mean phon number of signal: " << SIGNAL_MEANPHN << std::endl;
+	std::cout << "Probbability of polarisation measurement error: " << PROB_PME << std::endl;
+	std::cout << "Total noise: "  << NOISE << std::endl;
+	std::cout << "Number of detectors: " << DETECTOR_NUM << std::endl;
+	
 }
 
 void QProtocol::qber() {std::cout << "QBER values were not generated" << std::endl;}
@@ -133,9 +182,6 @@ std::vector<std::string> split(std::string string, char separator)
  */
 void QProtocol::read_from_file()
 {
-
-	std::cout << "Reading from file..." << std::endl;
-
 	std::ifstream fin;
 	std::string line;
 	int line_position = 0;
@@ -143,7 +189,7 @@ void QProtocol::read_from_file()
 	char separator = ';';
 
 	// Open an existing file
-	fin.open("resource/asv_860.csv");
+	fin.open("resource/layer_data.csv");
 
 	while (!fin.eof())
 	{
@@ -222,7 +268,7 @@ void QProtocol::set_direction(int direction)
 	this->direction = direction;
 }
 
-void QProtocol::set_scenario(std::string climate, std::string season, std::string weather)
+void QProtocol::set_conditions(std::string climate, std::string season, std::string weather)
 {
 	this->climate = climate;
 	this->season = season;

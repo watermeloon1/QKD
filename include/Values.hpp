@@ -6,50 +6,50 @@
 #define SPACE_EARTH 1
 #define SPACE_SPACE 2
 #define A (1.7 * pow(10, -14))
-#define DEGREE(radian) radian * 180 / PI
-#define RADIAN(degree) degree *PI / 180
-#define METER(kilometer) kilometer * 1000
-#define WAVE(length) 2 * PI / (length * pow(10, -9))
+#define TO_DEGREE(radian) radian * 180 / PI
+#define TO_RADIAN(degree) degree * PI / 180
+#define TO_METER(kilometer) kilometer * 1000
+#define TO_WAVE(length) 2 * PI / (length * pow(10, -9))
 
-static double wave_length = 860; // nm
-static double wave_length_MIN = 800; // nm
-static double wave_length_MAX = 1200; // nm
+#define WAVELENGTH 860 // nm
+#define WAVELENGTH_MIN 800 // nm
+#define WAVELENGTH_MAX 1200 // nm
 
-static double wind_speed = 21; // m/s
-static double wind_speed_MIN = 15; // m/s
-static double wind_speed_MAX = 25; // m/s
+#define WINDSPEED 21 // m/s
+#define WINDSPEED_MIN 15 // m/s
+#define WINDSPEED_MAX 25 // m/s
 
-static double aperture_diameter = 0.2; // m
-static double aperture_diameter_MIN = 0.1; // m
-static double aperture_diameter_MAX = 0.5; // m
+#define APERTURE_DIAM 0.2 // m
+#define APERTURE_DIAM_MIN 0.1 // m
+#define APERTURE_DIAM_MAX 0.5 // m
 
 
-static double targeting_angular_error = 0.5; // μrad
-static double targeting_angular_error_MIN = 0.3; // μrad
-static double targeting_angular_error_MAX = 0.7; // μrad
+#define TARGETING_ANGULAR_ERROR 0.5 // μrad
+#define TARGETING_ANGULAR_ERROR_MIN 0.3 // μrad
+#define TARGETING_ANGULAR_ERROR_MAX 0.7 // μrad
 
-static double mirror_diameter = 2; // m
-static double mirror_diameter_MIN = 1; // m
-static double mirror_diameter_MAX = 4; // m
+#define MIRROR_DIAM 2 // m
+#define MIRROR_DIAM_MIN 1 // m
+#define MIRROR_DIAM_MAX 4 // m
 
-static double space_space_channel_length = 1000; // km
+#define SPACE_SPACE_CHAN_LENGTH 1000 // km
 
-static double quantum_efficiency_of_detector = 0.7; 
-static double quantum_efficiency_of_detector_MIN = 0.5; 
-static double quantum_efficiency_of_detector_MAX = 0.9; 
+#define DETECTOR_QEFF 0.7 
+#define DETECTOR_QEFF_MIN 0.5 
+#define DETECTOR_QEFF_MAX 0.9 
 
-static double mean_photon_number_of_signal = 0.1; 
-static double mean_photon_number_of_signal_MIN = 0.05; 
-static double mean_photon_number_of_signal_MAX = 0.15; 
+#define SIGNAL_MEANPHN 0.1 
+#define SIGNAL_MEANPHN_MIN 0.05 
+#define SIGNAL_MEANPHN_MAX 0.15 
 
-static double probability_of_polarization_measurement_error = 0.0001; 
-static double probability_of_polarization_measurement_error_MIN = 0.0001; 
-static double probability_of_polarization_measurement_error_MAX = 0.0005; 
+#define PROB_PME 0.0001 
+#define PROB_PME_MIN 0.0001 
+#define PROB_PME_MAX 0.0005 
 
-static double noise = 0.0000002; 
-static double noise_MIN = 0.0000002; 
-static double noise_MAX = 0.0000005;
+#define NOISE 0.0000002 
+#define NOISE_MIN 0.0000002 
+#define NOISE_MAX 0.0000005
 
-static double number_of_detectors = 4;
-static double number_of_detectors_MIN = 1;
-static double number_of_detectors_MAX = 5;
+#define DETECTOR_NUM 4
+#define DETECTOR_NUM_MIN 1
+#define DETECTOR_NUM_MAX 5

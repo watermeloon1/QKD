@@ -83,7 +83,7 @@ public:
 	void set_noise(double noise);
 	void set_number_of_detectors(double number_of_detectors);
 
-	void set_scenario(std::string climate, std::string season, std::string weather);
+	void set_conditions(std::string climate, std::string season, std::string weather);
 	void set_climate(std::string climate);
 	void set_season(std::string season);
 	void set_weather(std::string weather);

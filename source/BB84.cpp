@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "../include/Values.hpp"
 #include "../include/QProtocol.hpp"
 #include "../include/BB84.hpp"
@@ -67,5 +68,18 @@ double BB84::get_qber()
 	return this -> qber_value;
 }
 
-BB84::BB84(double height_above_sea_level, double distance): QProtocol(height_above_sea_level, distance){}
+BB84::BB84(double height_above_sea_level, double distance): QProtocol(height_above_sea_level, distance){
+	std::cout << std::endl << "USING " << get_protocol_name() << " PROTOCOL!" << std::endl << std::endl;
+	
+	qber();
+	std::cout << std::fixed << std::setprecision(6);
+	std::cout << "Static loss\t\t" << this->static_loss << std::endl; 
+	std::cout << "Coherence length:\t" << this->coherence_length << std::endl;
+	std::cout << "Beam widening:\t\t" << this->beam_widening << std::endl; 
+	std::cout << "Targeting error:\t" << this->targeting_error << std::endl;
+	std::cout << "Dynamic loss:\t\t" << this->dynamic_loss << std::endl;
+	std::cout << "Transmittence:\t\t" << this->transmittance << std::endl;
+	std::cout << "QBER:\t\t\t" << this->qber_value << std::endl;
+
+}
 BB84::~BB84() {}

@@ -12,21 +12,19 @@
 double Tools::zenith(double distance_to_earth, double distance_to_base)
 {
 
-	if (distance_to_earth <= distance_to_base)
-	{
+	if (distance_to_earth <= distance_to_base){
 
 		double numerator, denominator, alfa_radian, alfa_degree, zenith_degree;
 
-		numerator = pow(EARTH_RADIUS, 2) + pow(distance_to_base, 2) - pow(EARTH_RADIUS + distance_to_earth, 2);
+		numerator = pow(EARTH_RADIUS, 2) + pow(distance_to_base, 2) - pow((EARTH_RADIUS + distance_to_earth), 2);
 		denominator = 2 * EARTH_RADIUS * distance_to_base;
 		alfa_radian = acos(numerator / denominator);
-		alfa_degree = DEGREE(alfa_radian);
+		alfa_degree = TO_DEGREE(alfa_radian);
 		zenith_degree = 180 - alfa_degree;
 
 		return zenith_degree;
 	}
-	else
-	{
+	else{
 		return -1;
 	}
 }
@@ -44,8 +42,8 @@ double Tools::beam_widening_vacuum(double distance, double telescope_aperture, d
 
 	double a, b, c;
 
-	double wave_number = WAVE(wave_lenght);
-	double distance_m = METER(distance);
+	double wave_number = TO_WAVE(wave_lenght);
+	double distance_m = TO_METER(distance);
 
 	a = 4 * pow(distance_m, 2);
 	b = pow(wave_number, 2) * pow(telescope_aperture, 2);
@@ -68,17 +66,17 @@ double Tools::beam_widening_atmosphere(double distance, double telescope_apertur
 
 	double a, b, c, d, e, f;
 
-	double wave_number = WAVE(wave_lenght);
-	double distance_m = METER(distance);
+	double wave_number = TO_WAVE(wave_lenght);
+	double distance_m = TO_METER(distance);
 
 	a = 4 * pow(distance_m, 2);
 	b = pow(wave_number, 2) * pow(telescope_aperture, 2);
 	c = pow(telescope_aperture, 2);
 	d = 4 * pow(distance_m, 2);
 	e = pow(wave_number * coherence_length, 2);
-	f = pow(1 - 0.62 * (pow(coherence_length / telescope_aperture, 1 / 3)), 6 / 5);
+	f = pow(pow((1 - 0.62 * pow((coherence_length / telescope_aperture), 1 / 3)), 6), 1 / 5);
 
-	return sqrt(a / b + c / 4 + d / e * f);
+	return sqrt((a / b) + (c / 4) + (d / e) * f);
 }
 
 /**
@@ -95,9 +93,9 @@ double Tools::turbulence_strength(double height_above_sea_level, double wind_spe
 
 	a = 0.00594 * pow((wind_speed / 27), 2);
 	b = pow(height_above_sea_level * pow(10, -5), 10);
-	c = exp(height_above_sea_level / -1000);
-	d = 2.7 * pow(10, -6) * exp(height_above_sea_level / -1500);
-	e = A * exp(height_above_sea_level / -100);
+	c = exp((height_above_sea_level / 1000) * (-1));
+	d = 2.7 * pow(10, -16) * exp((height_above_sea_level / 1500) * (-1));
+	e = A * exp((height_above_sea_level / 100) * (-1));
 
 	return a * b * c + d + e;
 }
@@ -114,7 +112,7 @@ double Tools::targeting_error(double distance, double angular_error)
 
 	double a, b;
 
-	double distance_m = METER(distance);
+	double distance_m = TO_METER(distance);
 
 	a = distance_m * angular_error;
 	b = pow(10, -6);
@@ -168,7 +166,6 @@ double Tools::dynamic_loss(double total_scattering, double mirror_radius)
  * @param layers_of_air - the atmosphere of Earth divided into layers on top of each other
  * @param zenith - the zenith angle of the beam hitting Earth ( °)
  * @return double - the sum of static loss in all of the layers
- * TODO: correction
  */
 double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<double> molecular_absorption,
 						  std::vector<double> aerosol_scattering, std::vector<double> aerosol_absorption, std::vector<double> layers, double zenith)
@@ -176,21 +173,21 @@ double Tools::static_loss(std::vector<double> molecular_scattering, std::vector<
 
 	std::vector<double> scattering(molecular_scattering.size());
 
-	for (int i = 0; i < molecular_scattering.size(); i++)
+	for (int i = 0; i < molecular_scattering.size(); ++i)
 	{
 		scattering[i] = molecular_scattering[i] + aerosol_scattering[i];
 	}
 
 	std::vector<double> absorption(molecular_absorption.size());
 
-	for (int i = 0; i < molecular_absorption.size(); i++)
+	for (int i = 0; i < molecular_absorption.size(); ++i)
 	{
 		absorption[i] = molecular_absorption[i] + aerosol_absorption[i];
 	}
 
 	double sum_of_layers = 0;
 
-	for (int i = 0; i < layers.size() - 1; i++)
+	for (int i = 0; i < layers.size() - 1; ++i)
 	{
 		sum_of_layers += (((scattering[i] + scattering[i + 1]) / 2) + ((absorption[i] + absorption[i + 1]) / 2)) *
 											((layers[i + 1] - layers[i]) / cos(zenith * (PI / 180)));
@@ -215,21 +212,21 @@ double Tools::beam_widening_earth_space(double wave_length, std::vector<double> 
 	double a, b, c, d, e;
 	double t0, t1;
 
-	double distance_m = METER(distance);
-	double wave_number = WAVE(wave_length);
+	double distance_m = TO_METER(distance);
+	double wave_number = TO_WAVE(wave_length);
 
 	double sum = 0;
 
-	for (int i = 0; i < sectors.size() - 1; i++)
+	for (int i = 0; i < sectors.size() - 1; ++i)
 	{
 
 		t0 = turbulence_strength(sectors[i], wind_speed);
 		t1 = turbulence_strength(sectors[i + 1], wind_speed);
 
-		a = pow(1 - (sectors[i] / (distance_m * cos(RADIAN(zenith)))), 5 / 3);
-		b = pow(1 - (sectors[i + 1] / (distance_m * cos(RADIAN(zenith)))), 5 / 3);
+		a = pow(1 - sectors[i] / (distance_m * cos(TO_RADIAN(zenith))), 5 / 3);
+		b = pow(1 - sectors[i + 1] / (distance_m * cos(TO_RADIAN(zenith))), 5 / 3);
 		c = (t0 * a + t1 * b) / 2;
-		d = abs((sectors[i + 1] - sectors[i]) / cos(RADIAN(zenith)));
+		d = abs((sectors[i + 1] - sectors[i]) / cos(TO_RADIAN(zenith)));
 		e = c * d;
 
 		sum += e;
@@ -241,13 +238,13 @@ double Tools::beam_widening_earth_space(double wave_length, std::vector<double> 
 	{
 
 		sum *= (-1);
-		sum = pow(sum, (-0.6));
+		sum = pow(sum, -0.6);
 		sum *= (-1);
 		return sum;
 	}
 	else
 	{
-		return pow(sum, (-0.6));
+		return pow(sum, -0.6);
 	}
 }
 
@@ -267,21 +264,21 @@ double Tools::beam_widening_space_earth(double wave_length, std::vector<double> 
 	double a, b, c, d, e;
 	double t0, t1;
 
-	double distance_m = METER(distance);
-	double wave_number = WAVE(wave_length);
+	double distance_m = TO_METER(distance);
+	double wave_number = TO_WAVE(wave_length);
 
 	double sum = 0;
 
-	for (int i = 0; i < sectors.size() - 1; i++)
+	for (int i = 0; i < sectors.size() - 1; ++i)
 	{
 
 		t0 = turbulence_strength(sectors[i], wind_speed);
 		t1 = turbulence_strength(sectors[i + 1], wind_speed);
 
-		a = pow(1 - (distance_m - (sectors[i] / cos(RADIAN(zenith))) / distance_m), 5 / 3);
-		b = pow(1 - (distance_m - (sectors[i + 1] / cos(RADIAN(zenith))) / distance_m), 5 / 3);
+		a = pow(1 - (distance_m - (sectors[i] / cos(TO_RADIAN(zenith))) / distance_m), 5 / 3);
+		b = pow(1 - (distance_m - (sectors[i + 1] / cos(TO_RADIAN(zenith))) / distance_m), 5 / 3);
 		c = (t0 * a + t1 * b) / 2;
-		d = abs(sectors[i + 1] - sectors[i] / cos(RADIAN(zenith)));
+		d = abs(sectors[i + 1] - sectors[i] / cos(TO_RADIAN(zenith)));
 		e = c * d;
 
 		sum += e;
