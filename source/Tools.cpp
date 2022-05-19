@@ -40,16 +40,17 @@ double Tools::zenith(double distance_to_earth, double distance_to_base)
 double Tools::beam_widening_vacuum(double distance, double telescope_aperture, double wave_lenght)
 {
 
-	double a, b, c;
+	double a, b, c, d;
 
 	double wave_number = TO_WAVE(wave_lenght);
 	double distance_m = TO_METER(distance);
 
 	a = 4 * pow(distance_m, 2);
-	b = pow(wave_number, 2) * pow(telescope_aperture, 2);
-	c = pow(telescope_aperture, 2);
+	b = pow(wave_number, 2);
+    c = pow(telescope_aperture, 2);
+	d = pow(telescope_aperture, 2);
 
-	return sqrt(a / b + c / 4);
+	return sqrt((a / b) * c + d / 4);
 }
 
 /**
@@ -274,9 +275,8 @@ double Tools::beam_widening_space_earth(double wave_length, std::vector<double> 
 
 		t0 = turbulence_strength(sectors[i], wind_speed);
 		t1 = turbulence_strength(sectors[i + 1], wind_speed);
-
-		a = pow(1 - (distance_m - (sectors[i] / cos(TO_RADIAN(zenith))) / distance_m), 5 / 3);
-		b = pow(1 - (distance_m - (sectors[i + 1] / cos(TO_RADIAN(zenith))) / distance_m), 5 / 3);
+        a = pow(1 - ((distance_m - (sectors[i] /  cos(TO_RADIAN(zenith)))) / distance_m), 5 / 3);
+        b = pow(1 - ((distance_m - (sectors[i + 1] / cos(TO_RADIAN(zenith)))) / distance_m), 5 / 3);
 		c = (t0 * a + t1 * b) / 2;
 		d = abs(sectors[i + 1] - sectors[i] / cos(TO_RADIAN(zenith)));
 		e = c * d;

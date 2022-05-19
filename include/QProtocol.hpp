@@ -81,7 +81,7 @@ public:
 	void set_mean_photon_number_of_signal(double mean_photon_number_of_signal);
 	void set_probability_of_polarization_measurement_error(double probability_of_polarization_measurement_error);
 	void set_noise(double noise);
-	void set_number_of_detectors(double number_of_detectors);
+	void set_number_of_detectors(int number_of_detectors);
 
 	void set_conditions(std::string climate, std::string season, std::string weather);
 	void set_climate(std::string climate);

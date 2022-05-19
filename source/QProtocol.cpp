@@ -4,16 +4,14 @@
 #include <iostream>
 #include <fstream>
 
-float round_decimal(double number, int decimal_place){
+double round_decimal(double number, int decimal_place){
 	return ceil(number * (pow(10, decimal_place))) / pow(10, decimal_place);
 }
 
 QProtocol::QProtocol(double height_above_sea_level, double distance)
 {
-
-	Tools tools;
 	std::cout << "Calculating zenith angle..." << std::endl;
-	this->zenith = tools.zenith(height_above_sea_level, distance);
+	this->zenith = Tools::zenith(height_above_sea_level, distance);
 	std::cout << "Zenith angle is: " << this->zenith << "°" << std::endl << std::endl;
 
 	std::cout << "Calculating distance..." << std::endl;
@@ -49,18 +47,18 @@ QProtocol::QProtocol(double height_above_sea_level, double distance)
 		std::cout << this->layers[i] << "\t" << round_decimal(molecular_scattering[i], 5) << "\t\t" << round_decimal(this->molecular_absorption[i], 5) << "\t\t" << round_decimal(this->aerosol_scattering[i], 5) << "\t\t" << round_decimal(this->aerosol_absorption[i], 5) << std::endl;
 	}
 
-	set_direction(EARTH_SPACE);
-	set_wave_length(WAVELENGTH);
-	set_wind_speed(WINDSPEED);
-	set_aperture_diameter(APERTURE_DIAM);
-	set_targeting_angular_error(TARGETING_ANGULAR_ERROR);
-	set_mirror_diameter(MIRROR_DIAM);
-	set_space_space_channel_length(SPACE_SPACE_CHAN_LENGTH);
-	set_quantum_efficiency_of_detector(DETECTOR_QEFF);
-	set_mean_photon_number_of_signal(SIGNAL_MEANPHN);
-	set_probability_of_polarization_measurement_error(PROB_PME);
-	set_noise(NOISE);
-	set_number_of_detectors(DETECTOR_NUM);
+	this->direction = SPACE_SPACE;
+    this->wave_length = WAVELENGTH;
+    this->wind_speed = WINDSPEED;
+    this->aperture_diameter = APERTURE_DIAM;
+    this->targeting_angular_error = TARGETING_ANGULAR_ERROR;
+    this->mirror_diameter = MIRROR_DIAM;
+    this->space_space_channel_length = SPACE_SPACE_CHAN_LENGTH;
+    this->quantum_efficiency_of_detector = DETECTOR_QEFF;
+    this->mean_photon_number_of_signal = SIGNAL_MEANPHN;
+    this->probability_of_polarization_measurement_error = PROB_PME;
+    this->noise = NOISE;
+    this->number_of_detectors = DETECTOR_NUM;
 	
 	std::cout << std::endl << "DEFAULT VALUES " << std::endl;
 	std::cout << "--------------" << std::endl;
@@ -165,7 +163,7 @@ std::vector<std::string> split(std::string string, char separator)
 		if (string[i] == separator || i == length(string))
 		{
 			endIndex = i;
-			std::string substring = "";
+			std::string substring;
 
 			substring.append(string, startIndex, endIndex - startIndex);
 			strings.push_back(substring);
@@ -189,7 +187,7 @@ void QProtocol::read_from_file()
 	char separator = ';';
 
 	// Open an existing file
-	fin.open("resource/layer_data.csv");
+	fin.open("../resource/layer_data.csv");
 
 	while (!fin.eof())
 	{
@@ -200,37 +198,37 @@ void QProtocol::read_from_file()
 
 			std::vector<std::string> line_cells = split(line, separator);
 
-			this->layers.push_back(atof(line_cells[0].c_str()));
+			this->layers.push_back(strtod(line_cells[0].c_str(), nullptr));
 
-			if (this->climate.compare("Tropical") == 0)
+			if (this->climate == "Tropical")
 			{
-				this->molecular_absorption.push_back(atof(line_cells[2].c_str()));
-				this->molecular_scattering.push_back(atof(line_cells[3].c_str()));
+				this->molecular_absorption.push_back(strtod(line_cells[2].c_str(), nullptr));
+				this->molecular_scattering.push_back(strtod(line_cells[3].c_str(), nullptr));
                 std::cout << molecular_scattering.size() << std::endl;
 			}
-			else if (this->climate.compare("Midlatitude") == 0)
+			else if (this->climate == "Midlatitude")
 			{
-				if (this->season.compare("Summer") == 0)
+				if (this->season == "Summer" )
 				{
-					this->molecular_absorption.push_back(atof(line_cells[5].c_str()));
-					this->molecular_scattering.push_back(atof(line_cells[6].c_str()));
+					this->molecular_absorption.push_back(strtod(line_cells[5].c_str(), nullptr));
+					this->molecular_scattering.push_back(strtod(line_cells[6].c_str(), nullptr));
 				}
-				else if (this->season.compare("Winter") == 0)
+				else if (this->season == "Winter")
 				{
-					this->molecular_absorption.push_back(atof(line_cells[8].c_str()));
-					this->molecular_scattering.push_back(atof(line_cells[9].c_str()));
+					this->molecular_absorption.push_back(strtod(line_cells[8].c_str(), nullptr));
+					this->molecular_scattering.push_back(strtod(line_cells[9].c_str(), nullptr));
 				}
 			}
 
-			if (this->weather.compare("Clear") == 0)
+			if (this->weather == "Clear")
 			{
-				this->aerosol_absorption.push_back(atof(line_cells[11].c_str()));
-				this->aerosol_scattering.push_back(atof(line_cells[12].c_str()));
+				this->aerosol_absorption.push_back(strtod(line_cells[11].c_str(), nullptr));
+				this->aerosol_scattering.push_back(strtod(line_cells[12].c_str(), nullptr));
 			}
-			else if (this->weather.compare("Hazy") == 0)
+			else if (this->weather == "Hazy")
 			{
-				this->aerosol_absorption.push_back(atof(line_cells[14].c_str()));
-				this->aerosol_scattering.push_back(atof(line_cells[15].c_str()));
+				this->aerosol_absorption.push_back(strtod(line_cells[14].c_str(), nullptr));
+				this->aerosol_scattering.push_back(strtod(line_cells[15].c_str(), nullptr));
 			}
 		}
 		line_position += 1;
@@ -339,7 +337,7 @@ void QProtocol::set_noise(double noise)
 	this->noise = noise;
 }
 
-void QProtocol::set_number_of_detectors(double number_of_detectors)
+void QProtocol::set_number_of_detectors(int number_of_detectors)
 {
 	this->number_of_detectors = number_of_detectors;
 }
@@ -353,4 +351,4 @@ void QProtocol::print_figures()
 
 }
 
-QProtocol::~QProtocol() {}
+QProtocol::~QProtocol() = default;

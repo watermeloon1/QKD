@@ -8,10 +8,8 @@ public:
 	BB84(double height_above_sea_level, double distance); // constructor
 	~BB84();															 // destructor
 
-	std::string get_protocol_name();
-
-	void qber();
-	double get_qber();
+	std::string get_protocol_name() override;
+	void qber() override;
 };
 
 #endif
